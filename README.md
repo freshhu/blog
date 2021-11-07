@@ -3,7 +3,7 @@
  * @Email: hujiangnan@hatech.com.cn
  * @Date: 2021-11-07 15:33:13
  * @LastEditors: jiangnan
- * @LastEditTime: 2021-11-07 20:51:57
+ * @LastEditTime: 2021-11-07 21:34:51
  * @Describle: 描述
 -->
 
@@ -33,7 +33,7 @@ npm install
 npm run docs:dev
 
 # build for production with minification
-yarn build
+npm run build
 
 # 如果运行.sh文件需要在 git bash中运行相关的命令
 ```
