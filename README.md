@@ -1,8 +1,16 @@
+<!--
+ * @Author: jiangnan
+ * @Email: hujiangnan@hatech.com.cn
+ * @Date: 2021-11-07 21:32:32
+ * @LastEditors: jiangnan
+ * @LastEditTime: 2021-11-08 10:31:50
+ * @Describle: 描述
+-->
 
 
 # 个人博客
 
-记录工作中遇到的问题，平时学习的总结，面试题，以及一些个人思考。
+记录工作中遇到的问题，平时学习的总结，面试题，知识积累及个人的一些思考。
 
 [blog](https://freshhu.github.io/blog/)
 
