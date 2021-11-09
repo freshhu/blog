@@ -3,7 +3,7 @@ module.exports = {
     collapsable: false,
     children: [
         'algorithm-easy-1',
-        // 'algorithm-easy-2',
-        // 'algorithm-easy-3',
+        'algorithm-easy-2',
+        'algorithm-easy-3',
     ]
 };

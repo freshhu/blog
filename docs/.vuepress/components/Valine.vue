@@ -1,3 +1,11 @@
+<!--
+ * @Author: jiangnan
+ * @Email: hujiangnan@hatech.com.cn
+ * @Date: 2021-11-07 21:32:32
+ * @LastEditors: jiangnan
+ * @LastEditTime: 2021-11-09 11:23:22
+ * @Describle: 描述
+-->
 <template>
   <section class="read_num">
     <div>
@@ -31,8 +39,8 @@ export default {
  
     new Valine({
       el: '#vcomments',
-      appId: 'PzBRAo1U271H7HJLjo1z72Nd-gzGzoHsz',// your appId
-      appKey: '8eVX45J8i5VFTlkejnfBMuhh', // your appKey
+      appId: 'P1zBRAo1U271H7HJLjo1z72Nd-gzGzoHsz',// your appId
+      appKey: '81eVX45J8i5VFTlkejnfBMuhh', // your appKey
       notify: false,
       verify: false,
       path: window.location.pathname,

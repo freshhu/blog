@@ -272,16 +272,7 @@ interviewCalcConfig
  *   algorithm-other 其他渠道get到的算法
  *   algorithm-base 基础算法
  */
-const algorithmEasyConfig = require("../config/sidebarManage/algorithm/leet-code/algorithm-easy");
-const algorithmNormalConfig = require("../config/sidebarManage/algorithm/leet-code/algorithm-normal");
-const algorithmHardlConfig = require("../config/sidebarManage/algorithm/leet-code/algorithm-hard");
-
-/* const classicQuestionsConfig = require("../config/sidebarManage/algorithm/script-oj/classic-questions");
-const jsFoundationConfig = require("../config/sidebarManage/algorithm/script-oj/js-foundation");
-const scriptOjOtherConfig = require("../config/sidebarManage/algorithm/script-oj/script-oj-other"); */
-
-const algorithmBaseConfig = require("../config/sidebarManage/algorithm/other/algorithm-base");
-const algorithmOtherConfig = require("../config/sidebarManage/algorithm/other/algorithm-other");
+const algorithm = require('../config/sidebarManage/algorithm/index')
 
 
 /**
@@ -349,297 +340,287 @@ const foodMenuConfig = require("../config/sidebarManage/hodgepodge/food-menu");
 const plan2021Config = require("../config/sidebarManage/hodgepodge/plan/plan2021");
 
 module.exports = {
-  /**
-   * 学习笔记
-   * JavaScript语言新发展
-   */
-  // 基础准备
-  '/pages/note/front-review/': [
-    '',
-    reviewJavascriptConfig,  // javascript复习
-    reviewLinuxConfig  // linux复习
-  ],
-  /**
-   * 学习笔记
-   * JavaScript语言新发展
-   */
-  // 基础准备
-  '/pages/note/js-development/js-ready/': [
-    '',
-    jsReadyHtmlConfig,  // html预备进阶
-    jsReadyCssConfig,  // css预备进阶
-    jsReadyJavascriptConfig,  // js预备进阶
-    jsReadyLinuxConfig,  // linux预备进阶
-    jsReadyOtherConfig,  // 其他预备进阶
-  ],
-  // 笔记
-  '/pages/note/js-development/js-note/': [
-    '',
-    jsDevelopNoteConfig  // JavaScript语言新发展
-  ],
-  /**
-   * 学习笔记
-   * 微信小程序
-   */
-  '/pages/note/wechat-applet/': [
-    '',
-    wechatAppletNoteNoteConfig,  // 微信小程序
-  ],
-  /**
-   * 学习笔记
-   * 大话NodeJS72般变化
-   */
-  // 基础准备
-  '/pages/note/talk-node/talk-node-ready/': [
-    '',
-    nodeBaseApiConfig,  //  NodeJS基础API
-    nodeExpressConfig,  // express入门必看
-    nodeKoa1Config,  // KOA1入门必看
-    nodeKoa2Config,  // KOA2入门必看
-    nodeWorkConfig,  // Node实战小项目
-  ],
-  // 笔记
-  '/pages/note/talk-node/talk-node-note/': [
-    '',
-    talkNodeNoteConfig  // 大话NodeJS72般变化
-  ],
-  /**
-   * 学习笔记
-   * 前端工程化
-   */
-  // 基础准备
-  '/pages/note/front-engineering/front-engineering-ready/': [
-    '',
-    frontBuildingToolsConfig,  // 常用前端构建工具入门
-  ],
-  // 笔记
-  '/pages/note/front-engineering/front-engineering-note/': [
-    '',
-    frontEngineeringNoteConfig  // 前端工程化
-  ],
-  /**
-   * 学习笔记
-   * 前端性能优化与工程化
-   */
-  // 基础准备
-  '/pages/note/front-performance/front-performance-ready/': [
-    '',
-    frontTechnicalOptimizationConfig,  // 性能优化常用技术手段
-    frontSeniorDebugConfig,  // 前端工程师高级调试
-  ],
-  // 笔记
-  '/pages/note/front-performance/front-performance-note/': [
-    '',
-    frontPerformanceNoteConfig,  // 前端性能优化与工程化
-  ],
-  /**
-   * 学习笔记
-   * CSS古话今说与网站重构
-   */
-  // 基础准备
-  '/pages/note/css-advanced/css-advanced-ready/': [
-    '',
-    cssPretreatmentConfig,  // Less&Sass入门
-    cssCoreSkillConfig,  // CSS3其他核心技巧
-  ],
-  // 笔记
-  '/pages/note/css-advanced/css-advanced-note/': [
-    '',
-    cssAdvancedNoteConfig,  // CSS古话今说与网站重构
-  ],
-  /**
-   * 学习笔记
-   * MVC、MVVM框架那些事
-   */
-  // 基础准备
-  '/pages/note/front-frame/front-frame-ready/': [
-    '',
-    frontTsIntroConfig,  // Typescript入门
-    frontVueIntroConfig,  // vue入门必学
-    frontAngularIntroConfig,  // AngularJS入门必学
-    frontReactIntroConfig,  // React入门必学
-  ],
-  // 笔记
-  '/pages/note/front-frame/front-frame-note/': [
-    '',
-    frontFrameNoteConfig,  // MVC、MVVM框架那些事
-  ],
-  /**
-   * 学习笔记
-   * flutter
-   */
-  '/pages/note/flutter/': [
-    '',
-    flutterNoteNoteConfig,  // flutter
-  ],
-  /**
-   * 学习笔记
-   * uniapp
-   */
-  '/pages/note/uniapp/': [
-    '',
-    uniappNoteNoteConfig,  // uniapp
-  ],
-  /**
-   * 学习笔记
-   * 前端跨界AI、IOS、PC、Android、IOT
-   */
-  // 基础准备
-  '/pages/note/front-crossover/front-crossover-ready/': [
-    '',
-    frontMobileBuildConfig,  // Android&iOS开发环境搭建
-    frontRncoIntroConfig,  // ReactNative&Cordova入门
-    frontEmbedIntroConfig,  // 前端跨界PC与嵌入式
-    frontPythonIntroConfig,  // 走进Python的世界
-  ],
-  // 笔记
-  '/pages/note/front-crossover/front-crossover-note/': [
-    '',
-    frontCrossoverNoteConfig,  // 前端跨界AI、IOS、PC、Android、IOT
-  ],
-  /**
-   * 学习笔记
-   * python
-   */
-  '/pages/note/python/': [
-    '',
-    pythonNoteNoteConfig,  // python
-  ],
-  /**
-   * 学习笔记
-   * 数据结构与算法JavaScript实践
-   */
-  // 基础准备
-  '/pages/note/data-structure/data-structure-ready/': [
-    '',
-    structureJsTopConfig,  // 数据结构和算法JavaScript实践【上】
-    structureJsMidConfig,  // 数据结构和算法JavaScript实践【中】
-    structureJsBotConfig,  // 数据结构和算法JavaScript实践【下】
-    structureThoroughConfig,  // 数据结构和算法深入提升
-  ],
-  // 笔记
-  '/pages/note/data-structure/data-structure-note/': [
-    '',
-    dataStructureNoteConfig,  // 数据结构与算法JavaScript实践
-  ],
-  /**
-   * 学习笔记
-   * JavaScript图形学和H5游戏
-   */
-  // 基础准备
-  '/pages/note/front-graphics/front-graphics-ready/': [
-    '',
-    graphicsCanvasConfig,  // Canvas入门
-    graphicsCocos2dTopConfig,  // Cocos2d-JS快速入门【上】
-    graphicsCocos2dBotConfig,  // Cocos2d-JS快速入门【下】
-    graphicsWebglTopConfig,  // WebGL深入浅出【上】
-    graphicsWebglMidConfig,  // WebGL深入浅出【中】
-    graphicsWebglBotConfig,  // WebGL深入浅出【下】
-    graphicsThreeTopConfig,  // Three.js系列课程【上】
-    graphicsThreeMidConfig,  // Three.js系列课程【中】
-    graphicsThreeBotConfig,  // Three.js系列课程【下】
-  ],
-  // 笔记
-  '/pages/note/front-graphics/front-graphics-note/': [
-    '',
-    frontGraphicsNoteConfig,  // JavaScript图形学和H5游戏
-  ],
-  /**
-   * 学习笔记
-   * 设计模式与网络安全专场
-   */
-  // 基础准备
-  '/pages/note/front-hacker/front-hacker-ready/': [
-    '',
-    designPatternTopConfig,  // 常用设计模式【上】
-    designPatternBotConfig,  // 常用设计模式【下】
-  ],
-  // 笔记
-  '/pages/note/front-hacker/front-hacker-note/': [
-    '',
-    frontHackerNoteConfig,  // 设计模式与网络安全专场
-  ],
+    /**
+     * 学习笔记
+     * JavaScript语言新发展
+     */
+    // 基础准备
+    '/pages/note/front-review/': [
+        '',
+        reviewJavascriptConfig, // javascript复习
+        reviewLinuxConfig // linux复习
+    ],
+    /**
+     * 学习笔记
+     * JavaScript语言新发展
+     */
+    // 基础准备
+    '/pages/note/js-development/js-ready/': [
+        '',
+        jsReadyHtmlConfig, // html预备进阶
+        jsReadyCssConfig, // css预备进阶
+        jsReadyJavascriptConfig, // js预备进阶
+        jsReadyLinuxConfig, // linux预备进阶
+        jsReadyOtherConfig, // 其他预备进阶
+    ],
+    // 笔记
+    '/pages/note/js-development/js-note/': [
+        '',
+        jsDevelopNoteConfig // JavaScript语言新发展
+    ],
+    /**
+     * 学习笔记
+     * 微信小程序
+     */
+    '/pages/note/wechat-applet/': [
+        '',
+        wechatAppletNoteNoteConfig, // 微信小程序
+    ],
+    /**
+     * 学习笔记
+     * 大话NodeJS72般变化
+     */
+    // 基础准备
+    '/pages/note/talk-node/talk-node-ready/': [
+        '',
+        nodeBaseApiConfig, //  NodeJS基础API
+        nodeExpressConfig, // express入门必看
+        nodeKoa1Config, // KOA1入门必看
+        nodeKoa2Config, // KOA2入门必看
+        nodeWorkConfig, // Node实战小项目
+    ],
+    // 笔记
+    '/pages/note/talk-node/talk-node-note/': [
+        '',
+        talkNodeNoteConfig // 大话NodeJS72般变化
+    ],
+    /**
+     * 学习笔记
+     * 前端工程化
+     */
+    // 基础准备
+    '/pages/note/front-engineering/front-engineering-ready/': [
+        '',
+        frontBuildingToolsConfig, // 常用前端构建工具入门
+    ],
+    // 笔记
+    '/pages/note/front-engineering/front-engineering-note/': [
+        '',
+        frontEngineeringNoteConfig // 前端工程化
+    ],
+    /**
+     * 学习笔记
+     * 前端性能优化与工程化
+     */
+    // 基础准备
+    '/pages/note/front-performance/front-performance-ready/': [
+        '',
+        frontTechnicalOptimizationConfig, // 性能优化常用技术手段
+        frontSeniorDebugConfig, // 前端工程师高级调试
+    ],
+    // 笔记
+    '/pages/note/front-performance/front-performance-note/': [
+        '',
+        frontPerformanceNoteConfig, // 前端性能优化与工程化
+    ],
+    /**
+     * 学习笔记
+     * CSS古话今说与网站重构
+     */
+    // 基础准备
+    '/pages/note/css-advanced/css-advanced-ready/': [
+        '',
+        cssPretreatmentConfig, // Less&Sass入门
+        cssCoreSkillConfig, // CSS3其他核心技巧
+    ],
+    // 笔记
+    '/pages/note/css-advanced/css-advanced-note/': [
+        '',
+        cssAdvancedNoteConfig, // CSS古话今说与网站重构
+    ],
+    /**
+     * 学习笔记
+     * MVC、MVVM框架那些事
+     */
+    // 基础准备
+    '/pages/note/front-frame/front-frame-ready/': [
+        '',
+        frontTsIntroConfig, // Typescript入门
+        frontVueIntroConfig, // vue入门必学
+        frontAngularIntroConfig, // AngularJS入门必学
+        frontReactIntroConfig, // React入门必学
+    ],
+    // 笔记
+    '/pages/note/front-frame/front-frame-note/': [
+        '',
+        frontFrameNoteConfig, // MVC、MVVM框架那些事
+    ],
+    /**
+     * 学习笔记
+     * flutter
+     */
+    '/pages/note/flutter/': [
+        '',
+        flutterNoteNoteConfig, // flutter
+    ],
+    /**
+     * 学习笔记
+     * uniapp
+     */
+    '/pages/note/uniapp/': [
+        '',
+        uniappNoteNoteConfig, // uniapp
+    ],
+    /**
+     * 学习笔记
+     * 前端跨界AI、IOS、PC、Android、IOT
+     */
+    // 基础准备
+    '/pages/note/front-crossover/front-crossover-ready/': [
+        '',
+        frontMobileBuildConfig, // Android&iOS开发环境搭建
+        frontRncoIntroConfig, // ReactNative&Cordova入门
+        frontEmbedIntroConfig, // 前端跨界PC与嵌入式
+        frontPythonIntroConfig, // 走进Python的世界
+    ],
+    // 笔记
+    '/pages/note/front-crossover/front-crossover-note/': [
+        '',
+        frontCrossoverNoteConfig, // 前端跨界AI、IOS、PC、Android、IOT
+    ],
+    /**
+     * 学习笔记
+     * python
+     */
+    '/pages/note/python/': [
+        '',
+        pythonNoteNoteConfig, // python
+    ],
+    /**
+     * 学习笔记
+     * 数据结构与算法JavaScript实践
+     */
+    // 基础准备
+    '/pages/note/data-structure/data-structure-ready/': [
+        '',
+        structureJsTopConfig, // 数据结构和算法JavaScript实践【上】
+        structureJsMidConfig, // 数据结构和算法JavaScript实践【中】
+        structureJsBotConfig, // 数据结构和算法JavaScript实践【下】
+        structureThoroughConfig, // 数据结构和算法深入提升
+    ],
+    // 笔记
+    '/pages/note/data-structure/data-structure-note/': [
+        '',
+        dataStructureNoteConfig, // 数据结构与算法JavaScript实践
+    ],
+    /**
+     * 学习笔记
+     * JavaScript图形学和H5游戏
+     */
+    // 基础准备
+    '/pages/note/front-graphics/front-graphics-ready/': [
+        '',
+        graphicsCanvasConfig, // Canvas入门
+        graphicsCocos2dTopConfig, // Cocos2d-JS快速入门【上】
+        graphicsCocos2dBotConfig, // Cocos2d-JS快速入门【下】
+        graphicsWebglTopConfig, // WebGL深入浅出【上】
+        graphicsWebglMidConfig, // WebGL深入浅出【中】
+        graphicsWebglBotConfig, // WebGL深入浅出【下】
+        graphicsThreeTopConfig, // Three.js系列课程【上】
+        graphicsThreeMidConfig, // Three.js系列课程【中】
+        graphicsThreeBotConfig, // Three.js系列课程【下】
+    ],
+    // 笔记
+    '/pages/note/front-graphics/front-graphics-note/': [
+        '',
+        frontGraphicsNoteConfig, // JavaScript图形学和H5游戏
+    ],
+    /**
+     * 学习笔记
+     * 设计模式与网络安全专场
+     */
+    // 基础准备
+    '/pages/note/front-hacker/front-hacker-ready/': [
+        '',
+        designPatternTopConfig, // 常用设计模式【上】
+        designPatternBotConfig, // 常用设计模式【下】
+    ],
+    // 笔记
+    '/pages/note/front-hacker/front-hacker-note/': [
+        '',
+        frontHackerNoteConfig, // 设计模式与网络安全专场
+    ],
 
-  /**
-   * 面试题
-   */
-  '/pages/interview/': [
-    // '',
-    interviewBaseConfig,  // 基础面试题
-    interviewOneSideConfig,  // 一面训练
-    // interviewWriteConfig,  // 手写代码集锦
-    // interviewVueConfig,  // vue面试题
-    // interviewReactConfig,  // react面试题
-    // interviewWebpackConfig,  // weboack面试题
-    // interviewCalcConfig,  // 算法面试题
-    interviewReaady,  // 面试前准备
-    // interviewExperienceConfig,  // 面试经历
-  ],
+    /**
+     * 面试题
+     */
+    '/pages/interview/': [
+        // '',
+        interviewBaseConfig, // 基础面试题
+        interviewOneSideConfig, // 一面训练
+        // interviewWriteConfig,  // 手写代码集锦
+        // interviewVueConfig,  // vue面试题
+        // interviewReactConfig,  // react面试题
+        // interviewWebpackConfig,  // weboack面试题
+        // interviewCalcConfig,  // 算法面试题
+        interviewReaady, // 面试前准备
+        // interviewExperienceConfig,  // 面试经历
+    ],
 
-  /**
-   * 算法
-   */
-  '/pages/algorithm/leet-code/': [
-    '',
-    algorithmEasyConfig,  // 算法天堂模式
-    algorithmNormalConfig,  // 算法人间模式
-    algorithmHardlConfig,  // 算法地狱模式
-  ],
-  '/pages/algorithm/other/': [
-    '',
-    algorithmBaseConfig,  // 基础算法
-    // algorithmOtherConfig,  // 其他渠道get到的算法
-  ],
+    /**
+     * 算法
+     */
+    ...algorithm,
 
-  /**
-   * 积累
-   */
-  // 前端
-  '/pages/accumulation/front/': [
-    '',
-    jsNoteConfig,  // js笔记
-    vueNoteConfig,  // vue笔记
-    vue3ViteNoteConfig,  // vue3笔记
-    reactNoteConfig,  // react笔记
-    koaUniNote,  // koa+nuiapp笔记
-    // flutterNoteConfig,  // flutter笔记
-    nodeNoteConfig,  // node笔记
-    tsNoteConfig,  // ts笔记
-    nodeTsNoteConfig,  // node+ts笔记
-    vueTsNoteConfig,  // vue+ts笔记
-    // webpackNoteConfig,  // webpack笔记
-    // gisNoteConfig,  // gis笔记
-    // cesiumNoteConfig,  // cesium笔记
-    cssNoteConfig,  // css笔记
-    otherNoteConfig,  // 其他笔记
-  ],
-  // 后端
-  '/pages/accumulation/back/': [
-    '',
-    linuxNoteConfig,  // linux笔记
-    mysqlNoteConfig,  // mysql 数据库
-    // javaNoteConfig,  // java笔记
-    // javaBaseConfig,  /// java基础
-    // javaFrameConfig  // java框架
-  ],
-  // 其他
-  '/pages/accumulation/other/': [
-    '',
-    elkNoteConfig,
-    _otherNoteConfig
-  ],
+    /**
+     * 积累
+     */
+    // 前端
+    '/pages/accumulation/front/': [
+        '',
+        jsNoteConfig, // js笔记
+        vueNoteConfig, // vue笔记
+        vue3ViteNoteConfig, // vue3笔记
+        reactNoteConfig, // react笔记
+        koaUniNote, // koa+nuiapp笔记
+        // flutterNoteConfig,  // flutter笔记
+        nodeNoteConfig, // node笔记
+        tsNoteConfig, // ts笔记
+        nodeTsNoteConfig, // node+ts笔记
+        vueTsNoteConfig, // vue+ts笔记
+        // webpackNoteConfig,  // webpack笔记
+        // gisNoteConfig,  // gis笔记
+        // cesiumNoteConfig,  // cesium笔记
+        cssNoteConfig, // css笔记
+        otherNoteConfig, // 其他笔记
+    ],
+    // 后端
+    '/pages/accumulation/back/': [
+        '',
+        linuxNoteConfig, // linux笔记
+        mysqlNoteConfig, // mysql 数据库
+        // javaNoteConfig,  // java笔记
+        // javaBaseConfig,  /// java基础
+        // javaFrameConfig  // java框架
+    ],
+    // 其他
+    '/pages/accumulation/other/': [
+        '',
+        elkNoteConfig,
+        _otherNoteConfig
+    ],
 
-  /**
-   * 大杂烩
-   */
-  // 菜谱
-  '/pages/hodgepodge/food-menu/': [
-    '',
-    foodMenuConfig
-  ],
-  // 计划
-  '/pages/hodgepodge/plan/': [
-    '',
-    plan2021Config
-  ],
+    /**
+     * 大杂烩
+     */
+    // 菜谱
+    '/pages/hodgepodge/food-menu/': [
+        '',
+        foodMenuConfig
+    ],
+    // 计划
+    '/pages/hodgepodge/plan/': [
+        '',
+        plan2021Config
+    ],
 };
