@@ -3,7 +3,7 @@
  * @Email: hujiangnan@hatech.com.cn
  * @Date: 2021-11-07 21:32:32
  * @LastEditors: jiangnan
- * @LastEditTime: 2021-11-08 10:31:50
+ * @LastEditTime: 2021-11-09 10:58:56
  * @Describle: 描述
 -->
 
@@ -31,7 +31,7 @@ cd blog
 npm install
 
 # serve with hot reload at localhost:8080
-npm run docs:dev
+npm run dev
 
 # build for production with minification
 npm run build
