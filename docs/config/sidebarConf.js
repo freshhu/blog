@@ -237,30 +237,6 @@ const designPatternBotConfig = require("../config/sidebarManage/note/front-hacke
 // front-hacker-note  笔记
 const frontHackerNoteConfig = require("../config/sidebarManage/note/front-hacker/front-hacker-note/front-hacker-note");
 
-/**
- * 面试题
- * interview-base 基础面试题
- * interview-one-side 一面训练
- * interview-write 手写代码集锦
- * interview-vue vue面试题
- * interview-react react面试题
- * interview-webpack webpack面试题
- * interview-calc 算法面试题
- * interview-ready 面试前准备
- * interview-experience 面试经历2022开始
- */
-const interviewBaseConfig = require("../config/sidebarManage/interview/interview-base");
-const interviewOneSideConfig = require("../config/sidebarManage/interview/interview-one-side");
-const interviewWriteConfig = require("../config/sidebarManage/interview/interview-write");
-const interviewVueConfig = require("../config/sidebarManage/interview/interview-vue");
-const interviewReactConfig = require("../config/sidebarManage/interview/interview-react");
-const interviewWebpackConfig = require("../config/sidebarManage/interview/interview-webpack");
-const interviewCalcConfig = require("../config/sidebarManage/interview/interview-calc");
-const interviewReaady = require("../config/sidebarManage/interview/interview-ready");
-const interviewExperienceConfig = require("../config/sidebarManage/interview/interview-experience");
-
-interviewWebpackConfig,
-interviewCalcConfig
 
 /**
  * 算法
@@ -276,59 +252,12 @@ const algorithm = require('../config/sidebarManage/algorithm/index')
 
 
 /**
- * 积累
- * front 前端
- *  js-note js笔记
- *  vue-note vue笔记
- *  vue3-vite-note
- *  react-note react笔记
- *  koa-uniapp-note koa+nuiapp笔记
- *  flutter-note flutter笔记
- *  node-note node笔记
- *  ts-note ts笔记
- *  node-ts-note node+ts笔记
- *  vue-ts-note vue+ts笔记
- *  webpack-note webpack笔记
- *  gis-note gis笔记
- *  cesium-note gis笔记
- *  css-note css笔记
- *  other-note 其他
- * back 后端
- *  linux-note  linux笔记
- *  mysql-note  数据库
- *  java-note  java笔记
- *  java-base  java基础
- *  java-frame  java框架
- * other 其他
- *  elk-note  elk笔记
- *  other-note  其他笔记
+ * 知识积累
  */
 
-const jsNoteConfig = require("../config/sidebarManage/accumulation/front/js-note");
-const vueNoteConfig = require("../config/sidebarManage/accumulation/front/vue-note");
-const vue3ViteNoteConfig = require("../config/sidebarManage/accumulation/front/vue3-vite-note");
-const reactNoteConfig = require("../config/sidebarManage/accumulation/front/react-note");
-const koaUniNote = require("../config/sidebarManage/accumulation/front/koa-uniapp-note");
-const flutterNoteConfig = require("../config/sidebarManage/accumulation/front/flutter-note");
-const nodeNoteConfig = require("../config/sidebarManage/accumulation/front/node-note");
-const tsNoteConfig = require("../config/sidebarManage/accumulation/front/ts-note");
-const nodeTsNoteConfig = require("../config/sidebarManage/accumulation/front/node-ts-note");
-const vueTsNoteConfig = require("../config/sidebarManage/accumulation/front/vue-ts-note");
-const webpackNoteConfig = require("../config/sidebarManage/accumulation/front/webpack-note");
-const gisNoteConfig = require("../config/sidebarManage/accumulation/front/gis-note");
-const cesiumNoteConfig = require("../config/sidebarManage/accumulation/front/cesium-note");
-const cssNoteConfig = require("../config/sidebarManage/accumulation/front/css-note");
+const accumulation = require('../config/sidebarManage/accumulation/index')
 
-const otherNoteConfig = require("../config/sidebarManage/accumulation/front/other-note");
 
-const linuxNoteConfig = require("../config/sidebarManage/accumulation/back/linux-note");
-const mysqlNoteConfig = require("../config/sidebarManage/accumulation/back/mysql-note");
-const javaNoteConfig = require("../config/sidebarManage/accumulation/back/java-note");
-const javaBaseConfig = require("../config/sidebarManage/accumulation/back/java-base");
-const javaFrameConfig = require("../config/sidebarManage/accumulation/back/java-frame");
-
-const elkNoteConfig = require("../config/sidebarManage/accumulation/other/elk-note");
-const _otherNoteConfig = require("../config/sidebarManage/accumulation/other/other-note");
 
 /**
  * 大杂烩
@@ -550,66 +479,14 @@ module.exports = {
         '',
         frontHackerNoteConfig, // 设计模式与网络安全专场
     ],
-
-    /**
-     * 面试题
-     */
-    '/pages/interview/': [
-        // '',
-        interviewBaseConfig, // 基础面试题
-        interviewOneSideConfig, // 一面训练
-        // interviewWriteConfig,  // 手写代码集锦
-        // interviewVueConfig,  // vue面试题
-        // interviewReactConfig,  // react面试题
-        // interviewWebpackConfig,  // weboack面试题
-        // interviewCalcConfig,  // 算法面试题
-        interviewReaady, // 面试前准备
-        // interviewExperienceConfig,  // 面试经历
-    ],
-
     /**
      * 算法
      */
     ...algorithm,
-
     /**
-     * 积累
+     * 知识积累
      */
-    // 前端
-    '/pages/accumulation/front/': [
-        '',
-        jsNoteConfig, // js笔记
-        vueNoteConfig, // vue笔记
-        vue3ViteNoteConfig, // vue3笔记
-        reactNoteConfig, // react笔记
-        koaUniNote, // koa+nuiapp笔记
-        // flutterNoteConfig,  // flutter笔记
-        nodeNoteConfig, // node笔记
-        tsNoteConfig, // ts笔记
-        nodeTsNoteConfig, // node+ts笔记
-        vueTsNoteConfig, // vue+ts笔记
-        // webpackNoteConfig,  // webpack笔记
-        // gisNoteConfig,  // gis笔记
-        // cesiumNoteConfig,  // cesium笔记
-        cssNoteConfig, // css笔记
-        otherNoteConfig, // 其他笔记
-    ],
-    // 后端
-    '/pages/accumulation/back/': [
-        '',
-        linuxNoteConfig, // linux笔记
-        mysqlNoteConfig, // mysql 数据库
-        // javaNoteConfig,  // java笔记
-        // javaBaseConfig,  /// java基础
-        // javaFrameConfig  // java框架
-    ],
-    // 其他
-    '/pages/accumulation/other/': [
-        '',
-        elkNoteConfig,
-        _otherNoteConfig
-    ],
-
+    ...accumulation,
     /**
      * 大杂烩
      */

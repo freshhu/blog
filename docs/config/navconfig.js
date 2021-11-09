@@ -1,8 +1,45 @@
 module.exports = [
     // 以docs为根目录
     { text: 'Home', link: '/' },
+    {
+        text: '基础知识',
+        items: [
+            { text: 'Css', link: '/pages/basics/css/' },
+            { text: 'JavaScript', link: '/pages/basics/javaScript/' },
+            { text: 'TypeScript', link: '/pages/basics/typeScript/' }
+        ]
+    },
+    {
+        text: '三大框架',
+        items: [
+            { text: 'Vue', link: '/pages/frame/vue/' },
+            { text: 'React', link: '/pages/frame/react/' },
+            { text: 'Angular', link: '/pages/frame/angular/' }
+        ]
+    },
+    {
+        text: '前端工程化',
+        items: [
+            { text: 'Webpack', link: '/pages/enginnering/webpack/' }
+        ]
+    },
 
-    // 下拉列表显示分组
+    {
+        text: '算法',
+        items: [
+            { text: 'LeetCode', link: '/pages/algorithm/leet-code/' },
+            { text: '其他', link: '/pages/algorithm/other/' },
+        ]
+    },
+    {
+        text: '知识积累',
+        items: [
+            { text: '面试题', link: '/pages/accumulation/interview/' },
+            { text: '前端', link: '/pages/accumulation/front/' },
+            { text: '后端', link: '/pages/accumulation/back/' },
+            { text: '其他', link: '/pages/accumulation/other/' },
+        ]
+    },
     {
         text: '学习笔记',
         items: [
@@ -103,30 +140,6 @@ module.exports = [
             },
         ]
     },
-
-    // { text: '面试题', link: '/pages/interview/' },
-    { text: '面试题', link: '/pages/interview/interview-one-side-3' },
-
-    // { text: '算法', link: '/pages/algorithm/other/' },
-
-    {
-        text: '算法',
-        items: [
-            { text: 'LeetCode', link: '/pages/algorithm/leet-code/' },
-            { text: '其他', link: '/pages/algorithm/other/' },
-        ]
-    },
-
-    {
-        text: '积累',
-        items: [
-            // { text: '前端', link: '/pages/accumulation/front/' },
-            { text: '前端', link: '/pages/accumulation/front/react-note-1' },
-            { text: '后端', link: '/pages/accumulation/back/' },
-            { text: '其他', link: '/pages/accumulation/other/' },
-        ]
-    },
-
     /* {
       text: '大杂烩',
       items: [
