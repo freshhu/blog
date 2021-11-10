@@ -1,8 +1,8 @@
 ---
 home: true
 heroImage: /logo.jpg
-heroText: fresh的前端日志
-tagline: 欢迎访问我的前端日志
+heroText: fresh的前端博客
+tagline: 欢迎访问我的前端博客
 actionText: 开始阅读 →
 actionLink: pages/note/
 features:

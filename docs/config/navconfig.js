@@ -5,8 +5,8 @@ module.exports = [
         text: '基础知识',
         items: [
             { text: 'Css', link: '/pages/basics/css/' },
-            { text: 'JavaScript', link: '/pages/basics/javaScript/' },
-            { text: 'TypeScript', link: '/pages/basics/typeScript/' }
+            { text: 'JavaScript', link: '/pages/basics/javascript/' },
+            { text: 'TypeScript', link: '/pages/basics/typescript/' }
         ]
     },
     {
