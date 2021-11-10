@@ -25,22 +25,34 @@ TypeScript 提供最新的和不断发展的 JavaScript 特性，包括那些来
 
 1. 安装 TypeScript
 
-   ```javascript
+   ```bash
    npm install -g typescript
    ```
 
-2. 编译 TypeScript 文件
+2. 初始化项目
 
-   ```javascript
-   tsc helloworld.ts   // helloworld.ts => helloworld.js 
+   ```bash
+   # 1、创建项目
+   npm init -y
+   # 2、展示配置文件
+   tsc --init
    ```
    
-3. 快捷编译TypeScript文件，则可以安装 ts-node
-
-   ```javascript
-   npm install -g ts-node
    
-   ts-node helloworld.ts // 不用先编译成js，直接打印ts文件中的结果
+   
+3. 编译 TypeScript 文件
+
+   ```bash
+    # helloworld.ts => helloworld.js 
+   tsc helloworld.ts  
+   ```
+
+4. 快捷编译TypeScript文件，则可以安装 ts-node
+
+   ```bash
+   npm install -g ts-node
+   # 不用先编译成js，直接打印ts文件中的结果
+   ts-node helloworld.ts 
    ```
 
    
