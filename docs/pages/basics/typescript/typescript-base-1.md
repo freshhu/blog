@@ -61,9 +61,10 @@ TypeScript 提供最新的和不断发展的 JavaScript 特性，包括那些来
 
 ​		为了让程序有价值，我们需要能够处理最简单的数据单元：数字，字符串，结构体，布尔值等。 TypeScript支持与JavaScript几乎相同的数据类型，此外还提供了实用的枚举类型方便我们使用。
 
-​		基础类型：Number、String、Boolean、Symbol、BigInt、Null、Undefined、void、any、元组、枚举。
-
-​		对象类型：对象、数组、类、函数
+1. JS里面有七种数据类型。Number，String，Boolean, Null, Undefined, Symbol, Object
+2.  TS中的常用的数据类型有：
+    - 基础类型：Number、String、Boolean、Symbol、BigInt、Null、Undefined、void、any、元组、枚举。
+    - 对象类型：对象、数组、类、函数
 
 ### 2.1Number 类型
 
@@ -184,7 +185,10 @@ console.log(colorName);  // 显示'Green'因为上面代码里它的值是2
 ### 2.7Any 类型
 
 ​		在 TypeScript 中，任何类型都可以被归为 any 类型。这让 any 类型成为了类型系统的顶级类型（也被称作全局超级类型）。
+1. `any`类型是十分有用的，它允许你在编译时可选择地包含或移除类型检查
+2. Any类型 有时候，我们会想要为那些在编程阶段还不清楚类型的变量指定一个类型，如用户输入或者`ajax`或者第三方库；这种情况下，我们不希望类型检查器对这些值进行检查而是直接让它们通过编译阶段的检查。 那么我们可以使用 any类型来标记这些变量
 
+3. 使用场景是， 当我们需要把公司现有的`javascript`项目迁移到typescript上面来的时候，就可以给变量声明any类型，后面再逐个的去优化，能让我们的老项目迅速切换到`typescirpt`
 ```javascript
 let notSure: any = 666;
 notSure = "Semlinker";
@@ -274,20 +278,42 @@ create(false); // Error
 create(undefined); // Error
 ```
 
-## 三、类型注释和类型推论
+## 三、TS高级类型
 
 ### 3.1 类型注释
 
 类型注解, 我们来告诉 TypeScript变量是什么类型
 
-```javascript
+```typescript
 // 分两行写，则无法推论出count是number类型，需要注释
 let count: number;
 count = 123;
 // let count = 123 可以不用注释，则就会推论为number类型
 ```
+### 3.2联合类型
+1. 表示取值可以为多种类型中的一种， 使用竖线（|）分割每个类型
 
-### 3.2类型推论
+   ```typescript
+   let myNumber: string | number;
+   myNumber = 'nine';
+   myNumber = 9;
+   
+   console.log(myNumber);
+   myNumber = true;
+   // 这里允许myNumber的数据类型是 string和number， 不能是其他类型; 如果赋值为boolean则会报编译错误
+   ```
+
+2. 联合类型的属性或方法,只能访问它的所有类型里共有的属性或方法
+
+   ```typescript
+   function getParam(argc: number | string) {
+     // console.log(argc.toFixed());
+     console.log(argc.toString());
+   }
+   getParam(1);
+   ```
+3.  补充  联合类型相当于由类型构成的枚举类型
+### 3.3类型推论
 
 类型推论, TS 会自动的去尝试分析变量的类型
 
@@ -302,7 +328,7 @@ function getTotal(firstNumber:number,secondNumber:number){ // 需要加。如果
 const total = getTotal(1,2); // 此时total便可以推断出为number类型，就不用加类型注解。
 ```
 
-## 四、TypeScript 断言
+### 3.4类型断言
 
 ​		有时候你会遇到这样的情况，你会比TypeScript更了解某个值的详细信息。 通常这会发生在你清楚地知道一个实体具有比它现有类型更确切的类型。
 
@@ -310,14 +336,14 @@ const total = getTotal(1,2); // 此时total便可以推断出为number类型，�
 
 类型断言有两种形式：
 
-### 4.1 尖括号 语法
+#### 3.4.1 尖括号 语法
 
 ```typescript
 let someValue: any = "this is a string";
 let strLength: number = (<string>someValue).length;
 ```
 
-### 4.2`as`语法：
+#### 3.4.2`as`语法：
 
 ```typescript
 let someValue: any = "this is a string";
@@ -326,7 +352,49 @@ let strLength: number = (someValue as string).length;
 
 ​		两种形式是等价的。 至于使用哪个大多数情况下是凭个人喜好；然而，当你在TypeScript里使用JSX时，只有 `as`语法断言是被允许的。
 
-## 五、函数
+### 3.5类型别名
+1. 类型别名用来给一个类型起个新名字
+
+2. 起别名不会新建一个类型 - 它创建了一个新 名字来引用那个类型； 一般给原始类型起别名没什么用
+
+3. 工作里面尽量使用后面我们会学习的接口 来代替类型别名
+
+ ```typescript
+// 语法结构是 type + 自定义变量名  然后再赋值一个已存在的类型
+type Name = string;
+type NameNS = string | number;
+
+let goodsName: Name = 'iphone';
+let goodsName1: NameNS = 12;
+```
+### 3.6字符串字面量类型
+1. 字符串string字面量类型  用来约束取值只能是某几个字符串中的一个
+
+2. 字符串字面量类型与类型别名都是使用 type 进行定义
+
+3. TypeScript 同样也提供 boolean 和 number 的字面量类型
+
+```typescript
+type MoveDirection = 'up' | 'down' | 'left' | 'rigth';
+function move(direction: MoveDirection) {
+    console.log(`向：${direction} 方向移动`);
+}
+   
+move('up');
+move('下');
+
+TypeScript 同样也提供 boolean 和 number 的字面量类型：例如
+type oneToThree = 1 | 2 | 3;
+type myBool = true | false;
+
+let myNum = 3;
+let myboo = false;
+console.log(myNum, myboo);
+```
+
+   
+
+## 四、函数
 
 ​		和JavaScript一样，TypeScript函数可以创建有名字的函数和匿名函数。 你可以随意选择适合应用程序的方式，不论是定义一系列API函数还是只使用一次的函数。
 
@@ -389,7 +457,7 @@ const func1:(str:string) => number = (str) => {
 } 
 ```
 
-## 六、函数的重载
+## 五、函数的重载
 
 
 
