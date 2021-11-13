@@ -1,11 +1,4 @@
-<!--
- * @Author: jiangnan
- * @Email: hujiangnan@hatech.com.cn
- * @Date: 2021-11-07 21:32:35
- * @LastEditors: jiangnan
- * @LastEditTime: 2021-11-10 20:08:07
- * @Describle: 描述
--->
+
 # nodeJS
 
 ## 一、nodeJS可以做什么
@@ -36,7 +29,7 @@ Reactor模式下实现异步IO、事件驱动。Nodejs更使用于IO密集型高
 
 ​		**NodeJS异步IO**
 
-![image-20211110192940871](C:\Users\hujia\AppData\Roaming\Typora\typora-user-images\image-20211110192940871.png)
+![同步、异步](/blog/images/note/talk-node/image-readme1.png)
 
 ​		对于其他语言，系统并不知道异步是否完成，那么系统可以重复调用IO操作，判断IO是否结束，那么这就是轮询，常见轮询技术有：read、select、poll、kqueue、event ports，但这些对于代码而言还是同步的效果。
 
@@ -71,7 +64,7 @@ const server = http.createServer((req,res)=>{
 
 1、作为中间层
 
-![image-20211110200050101](C:\Users\hujia\AppData\Roaming\Typora\typora-user-images\image-20211110200050101.png)
+![中间层](/blog/images/note/talk-node/image-readme2.png)
 
 2、操作数据库提供API服务
 

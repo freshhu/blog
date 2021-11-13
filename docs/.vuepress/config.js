@@ -1,6 +1,5 @@
 const navConf = require('../config/navconfig');
 const sidebarConf = require('../config/sidebarConf');
-console.log("sidebarConf->", sidebarConf)
 module.exports = {
     title: 'fresh的前端博客',
     description: 'freshXXXX',
