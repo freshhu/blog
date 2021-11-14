@@ -140,6 +140,15 @@ process.on('beforeExit',(code)=>{
 })
 console.log('代码执行完了')
 // 以上三个打印输出的顺序是： 代码执行完了  、 before exit 0 、exit 0 
+
+// 5. 标准输出 输入 错误
+console.log = function(data){
+    process.stdout.write('---'+data+'\n')
+}
+console.log(11) // ---11
+
+// 面板中写入东西则会复制对应的内容输出
+process.stdin.pipe(process.stdout)
 ```
 
 
