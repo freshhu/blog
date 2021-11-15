@@ -396,11 +396,35 @@ console.log(myNum, myboo);
 
 ## 四、函数
 
-​		和JavaScript一样，TypeScript函数可以创建有名字的函数和匿名函数。 你可以随意选择适合应用程序的方式，不论是定义一系列API函数还是只使用一次的函数。
+### 	4.1 函数定义的两种方式，以及函数类型
+
+1. 一个函数有输入和输出，要在 TypeScript 中对其进行约束，需要给函数的参数和返回值都设置一个类型
+
+2. 函数有个特点：函数内部可以使用函数体外部的变量
+
+3. `TypeScript` 的函数类型定义中，=> 用来表示函数的定义，左边是输入类型，需要用括号括起来，右边是输出类型。 在 ES6 中，=> 叫做箭头函数
+
+4. 后面我们会用接口来定义函数的形状，避免我们在函数的定义哪里写的代码过于臃肿，让代码结构更清晰
 
 ​		1、为函数定义类型
 
 ```typescript
+// 函数声明
+function add(x, y) {
+  return x + y;
+}
+// 函数表达式
+let add1 = function add1(x, y) {
+  return x + y;
+};
+// 我们之前说过，任何的js代码都可以不改代码的情况下，直接将后缀名改为ts，可以正常的运行; 是因为ts的类型推断，会自动的根据我们传入的变量和返回的值进行判断
+// 我们使用ts的形式来定义两个函数
+function add(x: number, y: number): number {
+  return x + y;
+}
+let add2 = function(x: number, y: number): number {
+  return x + y;
+};
 // 我们可以给每个参数添加类型之后再为函数本身添加返回值类型。 TypeScript能够根据返回语句自动推断出返回值类型，因此我们通常省略它。
 function add(x: number, y: number): number {
     return x + y;
@@ -452,159 +476,232 @@ const func = (str:string):number => {
 
 ```typescript
 // 方式2
-const func1:(str:string) => number = (str) => {
-    return parseInt(str,10)
-} 
+// 在 TypeScript 的类型定义中，=> 用来表示函数的定义，左边是输入类型，需要用括号括起来，右边是输出类型。 在 ES6 中，=> 叫做箭头函数
+let add2: (x: number, y: number) => number = function(x: number, y: number): number {
+  return x + y;
+};
+
+// 一般情况下，使用接口进行定义函数类型（后面会详讲），可以看定义的格式：
+interface MyFn{
+	(x:number,y:number):number;
+}
+let add3:MyFn = function(x: number, y: number): number {
+  return x + y;
+};
 ```
 
-## 五、函数的重载
+### 	4.2 可选参数和默认参数
 
+1. `JavaScript`里，每个参数都是可选的，可传可不传。 没传参的时候，它的值就是undefined
 
+2. 在`TypeScript`里参数多了或者少了都是不被允许的；但是我们可以在参数名旁使用 ?实现可选参数的功能
 
-## 六、接口
+3. 可选参数必须接在必需参数后面，也就是可选参数后面不允许再出现必需参数了
 
-​		typeScript的核心原则之一是对值所具有的*结构*进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
+4. 在 ES6 中，我们允许给函数的参数添加默认值，`TypeScript `会将添加了默认值的参数识别为可选参数
 
 ```typescript
-interface LabelledValue {
-  label: string;
-  size?: number
+function fullName(firstName: string, lastName?: string) {
+  console.log(lastName);
+  return firstName + ' ' + lastName;
 }
-// 类型别名 type ,跟接口区别在于，type label = string; 而接口必须写成类似对象的形式。
-// type LabelledValue = {
-//    label:string;
-// }
-function printLabel(labelledObj: LabelledValue) {
-  console.log(labelledObj.label);
-}
-// 传size或者不传size，接口可以用问号
-let myObj = {label: "Size 10 Object"};
-printLabel(myObj);
+// 如果不加？, 这个函数我们就只能传递2个参数，多了少了编译都会失败；但是在js里面如果不传，返回值就是undefined
+// 如果加上了?， 那这个函数第一个参数还是必传，第二个参数可传可不传
+console.log(fullName('123', '456'));
+console.log(fullName('123'));
 
+// 可选参数必须接在必选参数后面； 下面这样定义函数就会编译报错
+function buildName2(firstName?: string, lastName: string) {
+  return firstName + ' ' + lastName;
+}
+
+// 接下来我们来看一下默认参数
+function buildName2(firstName: string, lastName: string = 'Cat') {
+  return firstName + ' ' + lastName;
+}
+let tomcat1 = buildName2('Tom', 'Cat');
+let tom1 = buildName2('Tom');
+// 第二次函数调用只传入了一个参数，因为我们ts会将添加了默认值的参数设置为可选参数， 即使不传递也可以，就是用的默认值Cat
 ```
+
+### 4.3剩余参数
+
+1. 必要参数，默认参数和可选参数有个共同点：它们表示某一个参数
+2. 想同时操作多个参数，或者你并不知道会有多少参数传递进来， 在`js`里面使用arguments来访问所有传入的参数
+3. ` 在TypeScript`里，你可以把所有参数收集到一个变量里； 使用...扩展运算符
 
 ```typescript
-// readonly:只读属性 ，只读不能被更改。
-interface Person {
-	readonly age:number;
+function getBalls(x: string, ...restOfName: string[]) {
+  console.log(restOfName);
+  return x + ' ' + restOfName.join(' ');
 }
-const setPersonName = (person:Person):void => {
-    person.age = 12
-}
-const person = {
-    age:16
-}
-setPersonName(person) // 会报错
+// let myBalls = getBalls('basketball') 也可以
+let myBalls = getBalls('basketball', 'football', 'tennis', 'baseball');
+console.log(myBalls);
+// 上面的代码中 restOfName实际上是一个数组。所以我们可以用数组的类型来定义它
+// restOfName剩余参数会被当做个数不限的可选参数。 可以一个都没有，同样也可以有任意个。 编译器创建参数数组，名字是你在省略号（ ...）后面给定的名字
+// 并且要注意 rest 参数只能是最后一个参数
 ```
+
+
+
+### 4.4函数的重载
+
+1. 重载允许一个函数接受不同数量或类型的参数时，作出不同的处理。 为同一个函数提供多个函数类型定义来进行函数重载
+
+2. 同名函数的参数的个数、类型或者顺序必须不同 叫函数的重载
+
+3. 在定义重载的时候，一定要把最精确的定义放在最前面。因为查找重载列表，会从第一个重载定义开始使用，如果匹配的话就是用，否则就继续向下查下;最后函数实现时，需要使用 |操作符或者?操作符，把所有可能的输入类型全部包含进去
+
+4. 函数重载的意义在于能够让你知道传入不同的参数得到不同的结果，如果传入的参数不同，但是得到的结果（类型）却相同，那么这里就不需要使用函数重载
 
 ```typescript
-// 对象强校验
-interface Person {
-    name:string;
-    age?:number;
-}
-let getPersonName = (person:Person):void => {
-    console.log(person.name)
-}
-// 变量的形式进行传参，则除了可以传name、age还可以传别的参数则不会报错
-let person = {
- 		name:'dell',
-		sex:'male'
- }
-getPersonName(person)
-
-// 字面量的形式传参
-getPersonName({name:'dell',sex:'male'}) // 此时会报错，会进行对象的强校验
-// 如果使以上不报错，则可以如下写法：
-interface Person {
-    name:string;
-    age?:number;
-    [propName:string]:any; // 其他属性，属性名称是字符串，属性的值是任何类型的。
+function add(x: string | number, y: string | number): string | number {
+  if  (typeof x === 'number' && typeof y === 'number') {
+    return x + ;y
+  } else if (typeof x === 'string' && typeof y === 'string'){
+    return x + y;
+  }
 }
 
+let v1 = add(1,2) // 鼠标放到v1 可以看到 类型为 string|number  所以不能给v1直接定为number类型的。《如果复杂的数据结构，无法点出来。》
+let v2 = add('a','b')
+
+// 解决上面的问题则用到函数重载
+// 下面两个为函数的重载
+function add(x: string, y: string): string;
+function add(x: number, y: number): number;
+// 下面这个为函数的实现
+function add(x: string | number, y: string | number): string | number {
+  if  (typeof x === 'number' && typeof y === 'number') {
+    return x + ;y
+  } else if (typeof x === 'string' && typeof y === 'string'){
+    return x + y;
+  }
+}
+let v3 = add(1,2) // 此时把鼠标放到v3 则可以显示为number类型。
 ```
 
-类类型
-```typescript
-// 接口可以定义方法
-interface Person {
-  name:string;
-  age?:number;
-  say():string;
-}
-// 接口类的继承
-interface Teacher extends Person{
-	teach():string;
-}
 
-// 定义函数类型接口
-interface SayHi {
-    (word:string):string // 函数传一个word，类型为string。返回的是一个string类型的值
-}
 
-let getPersonName = (person:Teacher):void => {
-  console.log(person.name)
-}
-let person = {
-  name:'dell',
- sex:'male',
- say(){
-   return 'hello world'
- },
- teach(){
-   return 'jiaoshu'
- }
-}
-// 使用继承的接口
-getPersonName(person)
-// 使用定义的函数接口
-let say:SayHi = (word:string)=>{
-    return word
-}
-
-// User类去应用接口Person
-class User implements Person {
-    name = 'dell';
-    say(){
-        return 'hello'
-    }
-}
-
-```
-
-总结：接口被编译成js时，接口和类型的东西都没有，也没有编译成对应的js代码。由此可以看到接口在开发过程中起到提示作用，只是作为语法校验的工具。
-
-## 七、类
+## 五、类
 
 ​		传统的JavaScript程序使用函数和基于原型的继承来创建可重用的组件，但对于熟悉使用面向对象方式的程序员来讲就有些棘手，因为他们用的是基于类的继承并且对象是由类构建出来的。 从ECMAScript 2015，也就是ECMAScript 6开始，JavaScript程序员将能够使用基于类的面向对象的方式。 使用TypeScript，我们允许开发者现在就使用这些特性，并且编译后的JavaScript可以在所有主流浏览器和平台上运行，而不需要等到下个JavaScript版本。
 
-### 1.类定义与继承
+### 1.类定义
 
 ```typescript
-class Person {
- 	name = 'dell';
-    age = 10;
-    getName(){
-        return this.name
-    }
-    getAge(){
-        return this.age
-    }
+// 我们首先通过传统的构造函数和原型对象的方法来看一下对象实例的创建
+function Greeter(message) {
+  this.msg = message;
 }
-class Teacher extends Person{
-    getTeacherName(){
-        return 'teacher'
-    }
-    getAge(){
-        // 使用super可以调用父类的方法
-        return super.getAge()+12
-    }
+Greeter.prototype.greeter = function() {
+  return 'hello: ' + this.msg;
+};
+
+let m1 = new Greeter('传统方式创建对象实例');
+console.log(m1.msg);
+console.log(m1.greeter());
+
+// 接下来我们再通过类class的方式 生成一个对象实例
+
+class Greeter {
+  //  我们在ES6的时候，实例属性都是定义在constructor()方法里面， 在ES7里 我们可以直接将这个属性定义在类的最顶层，其它都不变，去掉this;
+  msg: string;
+  flag: boolean = false;
+  // 关于构造函数； constructor(构造函数)方法是类的默认方法
+  // 一个类必须有constructor方法，如果没有显示定义，一个空的constructor方法会被默认添加
+  constructor(message: string) {
+    this.msg = message;
+  }
+  greeter() {
+    console.log('这个是在构造函数外部定义实例属性：', this.flag);
+    return 'hello: ' + this.msg;
+  }
 }
-const teacher = new Teacher()
-console.log(teacher.getName()) // dell
-console.log(teacher.getTeacherName()) // teacher
-//子类重写父类的方法或者属性
-console.log(teacher.getAge()) // 22
+
+let g2 = new Greeter('通过类创建的对象实例'); // 没有加类型，则是因为类型推论，如果加类型则可以写成 let g2:Greeter = new Greeter('通过类创建的对象实例'); 说明Greeter可以当成类型来看
+console.log(g2.msg);
+console.log(g2.greeter());
+
+// 接下来我们来分析一些，ES6新增的class语法糖，和构造函数的一些关系
+console.log(typeof Greeter); // function 说明js和ts中没有类这个类型，只是传统的构造函数语法糖而已
+
+// 类class的类型 本质上是一个函数; 类本身就指向自己的构造函数
+// 通过在这个代码我们也可以发现，new类的时候就相当于new构造函数
+console.log(Greeter === Greeter.prototype.constructor); // true
+
+// 调用类上面的方法就是调用原型上的方法
+// 在类的实例上面调用方法，其实就是调用原型上的方法
+console.log(g2.greeter === Greeter.prototype.greeter); // true
+
+```
+
+
+
+### 2.继承
+
+1. 使用继承来扩展现有的类，是面向对象的三大特性之一(封装，继承，多态)
+
+2. 基类，父类，超类是指被继承的类，派生类，子类是指继承于基类的类
+
+3. ts中类继承类似于传统面向对象编程语言中的继承体系 ，使用extends关键字继承，类中this表示此当前对象本身，super表父类对象。子类构造函数中第一行代码调用父类构造函数完成初始化，然后再进行子类的进一步初始化。子类中可以访问父类(public、protected)的成员属性、方法
+
+4. 派生类包含了constructor; ts 规定只要派生类里面自定义了一个constructor函数就必须在使用this前，调用一下super方法
+
+   1. ES5 的继承，实质是先创造子类的实例对象this，然后再将父类的方法添加到this上面（Parent.apply(this)）;ES6 的继承机制完全不同，实质是先将父类实例对象的属性和方法，加到this上面（所以必须先调用super方法），然后再用子类的构造函数修改this
+   2. 因为子类自己的this对象，必须先通过父类的构造函数完成塑造，得到与父类同样的实例属性和方法，然后再对其进行加工，加上子类自己的实例属性和方法。如果不调用super方法，子类就得不到this对象
+
+   - 子类方法名和父类相同表示重写父类方法
+
+```typescript
+/* **业务需求，我们现在有两个类，一个动物类，一个狗类， 狗也是动物，所以会继承动物类的一些属性和方法 */
+class Animal {
+  name: string;
+  constructor(param: string) {
+    this.name = param;
+  }
+  move(distance: number = 0) {
+    console.log(`${this.name} 移动了 ${distance}m.`);
+  }
+}
+
+class Dog extends Animal {
+  bark() {
+    console.log('狗叫!');
+  }
+}
+
+const dog = new Dog('阿黄');
+console.log(dog.name);
+dog.bark();
+dog.move(10);
+dog.bark();
+// 上面这个例子中 动物类是基类，也可以父类；  狗是子类也可以叫派生类， 继承自动物类，可以使用父类的任何方法和属性
+
+/* **我们将上面的代码稍微做一下修改:派生类包含了constructor */
+class Dog extends Animal {
+  dogName2: string;
+  constructor(name: string) {
+    // 派生类包含了一个构造函数，就必须首先调用super()方法，会调用基类的构造函数，然后构造子类自己的this
+    super(name);
+    this.dogName2 = name;
+  }
+  // 父类也有一个move方法，我们在子类例自定义move方法，就会重写从Animal继承来的move方法，从而使move方法根据不同的类而实现不同的功能
+  move(distanceInMeters: number = 5) {
+    console.log('重写了基类的move方法');
+    super.move(distanceInMeters);
+  }
+  bark() {
+    console.log('狗叫!');
+  }
+}
+let animal1: Animal = new Animal('赤兔');
+// 这个dog1即使被声明为 Animal类型，也不会调用父类的move方法，因为它的值就是Dog实例
+let dog1: Dog = new Dog('阿黄');
+animal1.move();
+dog1.move(10);
+
 ```
 
 ### 2.类中的访问类型与构造器
@@ -685,7 +782,121 @@ console.log(bird.age) // 12
 
 ```
 
-### 3.静态属性，Setter和Getter
+### 3.静态方法和属性，Setter和Getter
+
+1. ES6中提供了 静态方法， ES7中提供了静态属性； TS两者都有
+2. 我们可以认为类具有 实例部分与 静态部分这两个部分。定义静态属性和方法，只需要在对应的属性和方法前面加上static即可
+
+```typescript
+class Animal {
+  color:string = 'grey';
+  static height:number = 173;
+  move(){
+      console.log('这是对象实例上面的方法')
+  }
+
+  static eat(){
+      console.log('这个就是静态方法')
+  }
+}
+// 通过对象cat上来调用的属性和方法 叫做对象实例的属性和方法
+// 通过类名Animal来调用的 叫静态属性和方法
+let v1 = new Animal();
+console.log(Animal.height);
+console.log(Animal.eat());
+v1.move();
+v1.color;
+```
+
+3.readonly 
+
+1. 只读属性关键字，只允许出现在属性声明或索引签名中
+
+2. 可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化
+
+```typescript
+// readonly 修饰符：你可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化,不能被更改。
+class Person{
+    public readonly name:string;
+    constructor(name:string){
+        this.name = name
+    }
+}
+const person = new Person('Dell')
+// person.name = 'hello' // readonly 类型的值，只能读，不能被更改。
+console.log(person.name)
+```
+
+4.访问修饰符
+
+ts类中修饰符分为3种； public ： 公有(所有)默认； protected：保护 (父类+子类)；private： 私有(本类)
+
+1.public在ts里成员都默认为public。也可以明确将一个成员标记成public
+
+```typescript
+class Animal {
+  public name: string;
+
+  //修饰符还可以使用在构造函数参数中，等同于类中定义该属性，使代码更简洁
+  // 下面的age属性就相当于定义在顶部的 一个实例属性，借助修饰符也可以定义
+  public constructor(theName: string, public age: number = 24) {
+    this.name = theName;
+  }
+
+  public move() {
+    console.log(123);
+  }
+}
+let a1 = new Animal('Lucy');
+console.log(a1.name, a1.age);
+// 上面的例子中，name 被设置为了 public，所以直接访问实例的 name 属性是允许的
+```
+
+2.protected： 属性和方法 如果是用 protected 修饰，则允许在派生类中访问
+
+```typescript
+class Animal {
+  // 这个name属性就只能在这个类里面访问，类外部访问就会报错
+  protected name: string;
+
+  constructor(theName: string) {
+    this.name = theName;
+  }
+}
+class Dog extends Animal {
+  constructor(name) {
+    super(name);
+    // 这个基类的name属性是 protected受保护的，所以可以在派生类里面访问
+    console.log(this.name);
+  }
+}
+let a1 = new Animal('Lucy');
+```
+
+3.private： 当成员被标记成 private时，它就不能在声明它的类的外部访问
+
+```typescript
+class Animal {
+  // 这个name属性就只能在这个类里面访问，类外部访问就会报错
+  private name: string;
+
+  constructor(theName: string) {
+    this.name = theName;
+  }
+}
+class Dog extends Animal {
+  constructor(name) {
+    // 派生类的构造函数必须包含super函数的调用
+    // 因为父类的构造函数需要一个参数，所以这里我们需要将name参数传递进去
+    super(name);
+    // console.log(this.name); //属性“name”为私有属性，只能在类“Animal”中访问。所以在派生类里面访问也是不允许的
+  }
+}
+let a1 = new Animal('Lucy');
+console.log(a1.name);
+```
+
+4.setter 和getter
 
 ```typescript
 // 注：若编译失败：Accessors are only available when targeting ECMAScript 5 and higher.解决办法：tsc xxx.ts --t es5
@@ -750,20 +961,9 @@ console.log(demo1===demo2) // true
 
 ```
 
-```typescript
-// readonly 修饰符：你可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化。
-class Person{
-    public readonly name:string;
-    constructor(name:string){
-        this.name = name
-    }
-}
-const person = new Person('Dell')
-// person.name = 'hello' // readonly 类型的值，只能读，不能被更改。
-console.log(person.name)
-```
 
-### 4.抽象类
+
+4.抽象类
 
 ​		抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 `abstract`关键字是用于定义抽象类和在抽象类内部定义抽象方法。
 
@@ -774,6 +974,7 @@ abstract class Geom{ // 定义了一个抽象类
     getType(){
         return 'Geom'
     }
+    // 抽象类里面的抽象方法只能定义方法的签名，具体的方法实现必须在派生类里面
     abstract getArea():number;// 由于每个图形的面积计算方式不一样，则可以定义一个抽象方法getArea
  }
  // 圆形
@@ -792,7 +993,123 @@ abstract class Geom{ // 定义了一个抽象类
  }
 ```
 
-## 八、类和接口
+## 六、接口
+
+​		typeScript的核心原则之一是对值所具有的*结构*进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
+
+```typescript
+interface LabelledValue {
+  label: string;
+  size?: number
+}
+// 类型别名 type ,跟接口区别在于，type label = string; 而接口必须写成类似对象的形式。
+// type LabelledValue = {
+//    label:string;
+// }
+function printLabel(labelledObj: LabelledValue) {
+  console.log(labelledObj.label);
+}
+// 传size或者不传size，接口可以用问号
+let myObj = {label: "Size 10 Object"};
+printLabel(myObj);
+
+```
+
+```typescript
+// readonly:只读属性 ，只读不能被更改。
+interface Person {
+	readonly age:number;
+}
+const setPersonName = (person:Person):void => {
+    person.age = 12
+}
+const person = {
+    age:16
+}
+setPersonName(person) // 会报错
+```
+
+```typescript
+// 对象强校验
+interface Person {
+    name:string;
+    age?:number;
+}
+let getPersonName = (person:Person):void => {
+    console.log(person.name)
+}
+// 变量的形式进行传参，则除了可以传name、age还可以传别的参数则不会报错
+let person = {
+ 		name:'dell',
+		sex:'male'
+ }
+getPersonName(person)
+
+// 字面量的形式传参
+getPersonName({name:'dell',sex:'male'}) // 此时会报错，会进行对象的强校验
+// 如果使以上不报错，则可以如下写法：
+interface Person {
+    name:string;
+    age?:number;
+    [propName:string]:any; // 其他属性，属性名称是字符串，属性的值是任何类型的。
+}
+
+```
+
+类类型
+
+```typescript
+// 接口可以定义方法
+interface Person {
+  name:string;
+  age?:number;
+  say():string;
+}
+// 接口类的继承
+interface Teacher extends Person{
+	teach():string;
+}
+
+// 定义函数类型接口
+interface SayHi {
+    (word:string):string // 函数传一个word，类型为string。返回的是一个string类型的值
+}
+
+let getPersonName = (person:Teacher):void => {
+  console.log(person.name)
+}
+let person = {
+  name:'dell',
+ sex:'male',
+ say(){
+   return 'hello world'
+ },
+ teach(){
+   return 'jiaoshu'
+ }
+}
+// 使用继承的接口
+getPersonName(person)
+// 使用定义的函数接口
+let say:SayHi = (word:string)=>{
+    return word
+}
+
+// User类去应用接口Person
+class User implements Person {
+    name = 'dell';
+    say(){
+        return 'hello'
+    }
+}
+
+```
+
+总结：接口被编译成js时，接口和类型的东西都没有，也没有编译成对应的js代码。由此可以看到接口在开发过程中起到提示作用，只是作为语法校验的工具。
+
+
+
+## 七、类和接口
 
 ```typescript
 class Point {
@@ -908,7 +1225,7 @@ printPoint(new Point(1, 2));
 3. 类不可以继承接口，`类只能继承类`
 4. 可多继承或者多实现
 
-## 九、项目配置
+## 八、项目配置
 
 ​		概述：如果一个目录下存在一个`tsconfig.json`文件，那么它意味着这个目录是TypeScript项目的根目录。
 
@@ -1013,7 +1330,7 @@ printPoint(new Point(1, 2));
 
 
 
-## 十、联合类型和类型保护
+## 九、联合类型和类型保护
 
 ​		联合类型与交叉类型很有关联，但是使用上却完全不同。 偶尔你会遇到这种情况，一个代码库希望传入 `number`或 `string`类型的参数。 例如下面的函数：
 
@@ -1069,7 +1386,7 @@ function addSecond(first:object|NumberObj,second:object|NumberObj){
 }
 ```
 
-## 十一、泛型
+## 十、泛型
 
 ​		在像C#和Java这样的语言中，可以使用`泛型`来创建可重用的组件，一个组件可以支持多种类型的数据。 这样用户就可以以自己的数据类型来使用组件。
 
@@ -1163,7 +1480,7 @@ function hello<T>(params:T){
 const func:<T>(params:T) => T = hello
 ```
 
-## 十二、TypeScript 模块
+## 十一、TypeScript 模块
 
  **模块的的概念（官方）:**
 
@@ -1185,7 +1502,7 @@ const func:<T>(params:T) => T = hello
 
 ​    暴露后我们通过 import 引入模块就可以使用模块里面暴露的数据（变量、函数、类...）。
 
-## 十三、命名空间-namespace
+## 十二、命名空间-namespace
 
 ​		命名空间：在代码量较大的情况下，为了避免各种变量命名相冲突，可将相似功能的函数、类、接口等放置到命名空间内。
 
@@ -1281,7 +1598,7 @@ dog.eat();
 
 
 
-## 十四、类的装饰器
+## 十三、类的装饰器
 
 ​		装饰器是一种特殊类型的声明，它能够被附加到[类声明](https://www.tslang.cn/docs/handbook/decorators.html#class-decorators)，[方法](https://www.tslang.cn/docs/handbook/decorators.html#method-decorators)， [访问符](https://www.tslang.cn/docs/handbook/decorators.html#accessor-decorators)，[属性](https://www.tslang.cn/docs/handbook/decorators.html#property-decorators)或[参数](https://www.tslang.cn/docs/handbook/decorators.html#parameter-decorators)上。 装饰器使用 `@expression`这种形式，`expression`求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。
 
