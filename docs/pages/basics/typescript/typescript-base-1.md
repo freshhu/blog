@@ -6,11 +6,11 @@
 
 TypeScript 提供最新的和不断发展的 JavaScript 特性，包括那些来自 2015 年的 ECMAScript 和未来的提案中的特性，比如异步功能和 Decorators，以帮助建立健壮的组件。下图显示了 TypeScript 与 ES5、ES2015 和 ES2016 之间的关系：
 
-![base-one1](/blog/images/basics/base-one1.png)
+![base-one1](/blog/images/basics/ts/base-one1.png)
 
 ### 1.1 TypeScript 与 JavaScript 的区别
 
-![base-one2](/blog/images/basics/base-one2.png)
+![base-one2](/blog/images/basics/ts/base-one2.png)
 
 ### 1.2 TypeScript的优势
 
