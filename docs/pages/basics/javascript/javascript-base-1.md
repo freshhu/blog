@@ -1,4 +1,6 @@
-# 1.面向过程与面向对象
+# 一、对象
+
+## 1.面向过程与面向对象
 
 ### 1.1面向过程
 
@@ -227,7 +229,7 @@ damao.say();      //结果为 你的姓是刘
 
   5. 在 ES6 中类没有变量提升，所以必须先定义类，才能通过类实例化对象![](/blog/images/basics/js/base-one-img2.png)
 
-     ## ![](/blog/images/basics/js/base-one-img1.png)
+  ![](/blog/images/basics/js/base-one-img1.png)
 
 ## 3.面向对象版tab 栏切换
 
