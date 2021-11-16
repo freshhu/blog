@@ -704,84 +704,6 @@ dog1.move(10);
 
 ```
 
-### 2.类中的访问类型与构造器
-
-```typescript
-// private protected public 访问类型
-// public 允许在类的内和类的外被调用
-class Person{
-    name:string; // 如果没有设置访问类型，则前面默认为public
-}
-const person = new Person()
-person.name = 'dell'; // 由于name的访问类型为public 则可以赋值,也可以访问
-console.log(person.name)
-
-
-// private 允许在类内使用
-class Person{
-   private name:string; 
-}
-const person = new Person()
-// person.name = 'dell'; //报错 由于name的访问类型为private则不能在类外使用
-// console.log(person.name)//报错
-
-
-// protected 允许在类内及子类继的子类中使用
-class Person{
-    public name:string; 
-    protected say(){
-        console.log('hello')
-    }
- }
- class Teacher extends Person{
-     public sayBye(){
-         this.say()
-     }
- }
- const person = new Person()
- person.name = 'dell'; 
- console.log(person.name) // dell
- 
- const teacher= new Teacher()
- teacher.sayBye() // hello
-
-
-// 构造器
-class Person{
-    // 传统写法
-    // public name:string;
-    // constructor(name:string){
-    //     this.name = name
-    // }
-
-    // 简化写法
-    constructor(public name:string){
-        
-    }
-}
-let person = new Person('zhangsan')
-console.log(person.name) // zhangsan
-// super:如果子类写有构造器，则必须要在这个构造器中写调用super，并需要传入父类构造器中的参数，如果父类构造器中没有参数，则不需要传。
-class Animal{
-    constructor(public name:string){
-
-    }
-}
-let animal = new Animal('动物1');
-
-class Bird extends Animal{
-    constructor(public age:number){
-        super('动物2') //调用父类构造函数，并将参数传递过去
-    }
-}
-
-let bird = new Bird(12)
-console.log(bird.name) // 动物2
-console.log(bird.age) // 12
-
-
-```
-
 ### 3.静态方法和属性，Setter和Getter
 
 1. ES6中提供了 静态方法， ES7中提供了静态属性； TS两者都有
@@ -808,30 +730,11 @@ v1.move();
 v1.color;
 ```
 
-3.readonly 
+3.访问修饰符
 
-1. 只读属性关键字，只允许出现在属性声明或索引签名中
+​	ts类中修饰符分为3种； public ： 公有(所有)默认； protected：保护 (父类+子类)；private： 私有(本类)
 
-2. 可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化
-
-```typescript
-// readonly 修饰符：你可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化,不能被更改。
-class Person{
-    public readonly name:string;
-    constructor(name:string){
-        this.name = name
-    }
-}
-const person = new Person('Dell')
-// person.name = 'hello' // readonly 类型的值，只能读，不能被更改。
-console.log(person.name)
-```
-
-4.访问修饰符
-
-ts类中修饰符分为3种； public ： 公有(所有)默认； protected：保护 (父类+子类)；private： 私有(本类)
-
-1.public在ts里成员都默认为public。也可以明确将一个成员标记成public
+​	1）public在ts里成员都默认为public。也可以明确将一个成员标记成public
 
 ```typescript
 class Animal {
@@ -852,7 +755,7 @@ console.log(a1.name, a1.age);
 // 上面的例子中，name 被设置为了 public，所以直接访问实例的 name 属性是允许的
 ```
 
-2.protected： 属性和方法 如果是用 protected 修饰，则允许在派生类中访问
+​	2）protected： 属性和方法 如果是用 protected 修饰，则允许在派生类中访问
 
 ```typescript
 class Animal {
@@ -873,7 +776,7 @@ class Dog extends Animal {
 let a1 = new Animal('Lucy');
 ```
 
-3.private： 当成员被标记成 private时，它就不能在声明它的类的外部访问
+​	3）private： 当成员被标记成 private时，它就不能在声明它的类的外部访问
 
 ```typescript
 class Animal {
@@ -896,7 +799,28 @@ let a1 = new Animal('Lucy');
 console.log(a1.name);
 ```
 
-4.setter 和getter
+4.readonly 
+
+ 1）只读属性关键字，只允许出现在属性声明或索引签名中
+
+ 2）可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化
+
+```typescript
+// readonly 修饰符：你可以使用 readonly关键字将属性设置为只读的。 只读属性必须在声明时或构造函数里被初始化,不能被更改。
+class Person{
+    public readonly name:string;
+    constructor(name:string){
+        this.name = name
+    }
+}
+const person = new Person('Dell')
+// person.name = 'hello' // readonly 类型的值，只能读，不能被更改。
+console.log(person.name)
+```
+
+
+
+5.setter 和getter
 
 ```typescript
 // 注：若编译失败：Accessors are only available when targeting ECMAScript 5 and higher.解决办法：tsc xxx.ts --t es5
@@ -963,11 +887,39 @@ console.log(demo1===demo2) // true
 
 
 
-4.抽象类
+6.抽象类
 
-​		抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 `abstract`关键字是用于定义抽象类和在抽象类内部定义抽象方法。
+​	1）抽象类做为其它派生类的基类使用。 它们一般不会直接被实例化。 不同于接口，抽象类可以包含成员的实现细节。 	2）`abstract`关键字是用于定义抽象类和在抽象类内部定义抽象方法。
 
 ```typescript
+abstract class Animal {
+  name: string = '基类默认值';
+  abstract myName: string;
+  // 仅仅定义方法的签名，不包含方法体
+  abstract makeSound(): void;
+  move(): void {
+    console.log('动物行走');
+  }
+}
+
+//下面这行代码就会报错， 无法创建抽象类的实例
+//抽象类不能被实例化， 只能作为基类使用，也就是只能给其他类继承
+let aa2 = new Animal() //会报错
+
+//抽象类中的抽象方法不包含具体实现并且必须在派生类中实现。 抽象方法的语法与接口方法相似。 两者都是定义方法签名但不包含方法体。 然而，抽象方法必须包含 abstract关键字并且可以包含访问修饰符
+class Dog extends Animal {
+  myName: string = '抽象成员';
+  //如果在这里不写makeSound方法，则也会报错（ 编译报错：非抽象类“Dog”不会实现继承自“Animal”类的抽象成员“makeSound”）：也就是说我们要将基类的抽象方法在派生类这里再实现一次
+  makeSound() {
+    console.log(`基类的抽象方法必须在派生类中实现--${this.name}--${this.myName}`);
+  }
+}
+let aa3 = new Dog();
+console.log(aa3.makeSound());
+
+
+
+
 // 抽象类只能用于继承而不能被实例化。
 abstract class Geom{ // 定义了一个抽象类
     width:number;
