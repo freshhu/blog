@@ -947,7 +947,31 @@ abstract class Geom{ // 定义了一个抽象类
 
 ## 六、接口
 
-​		typeScript的核心原则之一是对值所具有的*结构*进行类型检查。 它有时被称做“鸭式辨型法”或“结构性子类型化”。 在TypeScript里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约。
+### 		6.1接口的概念
+
+1. 是对行为的抽象，而具体如何行动需要由类（classes）去实现（implement）
+
+2. 在` TypeScript` 中，我们使用接口（Interfaces）来定义对象的类型。除了可用于对类的一部分行为进行抽象以外，也常用于对「对象的形状（Shape）」进行描述
+
+   `TypeScript`的核心原则之一是对值所具有的结构进行类型检查， 在`TypeScript`里，接口的作用就是为这些类型命名和为你的代码或第三方代码定义契约
+
+```typescript
+// let a:number = 212
+// let v = {}
+
+interface Animal {
+  color: string;
+  height: number;
+}
+
+//  赋值的时候，变量的形状必须和接口的形状保持一致
+const labelVal: LabelledValue = {
+  color:'灰色';
+  height: 56
+};
+```
+
+
 
 ```typescript
 interface LabelledValue {
@@ -967,94 +991,296 @@ printLabel(myObj);
 
 ```
 
+### 6.2可选属性和只读属性
+
+1.有时我们希望不要完全匹配一个形状，那么可以用可选属性
+
 ```typescript
-// readonly:只读属性 ，只读不能被更改。
 interface Person {
-	readonly age:number;
+  name: string;
+  age: number;
+  car?: string;
 }
-const setPersonName = (person:Person):void => {
-    person.age = 12
-}
-const person = {
-    age:16
-}
-setPersonName(person) // 会报错
+
+let Lucy: Person = {
+  name: 'Lucy Lucy',
+  age: 18,
+  // car: '宝马'
+  // house: '别野'
+};
+// 可选属性的含义是该属性可以不存在 例如我们的car属性.仍然不允许添加未定义的属性 例如我们这里的house属性
 ```
 
-```typescript
-// 对象强校验
-interface Person {
-    name:string;
-    age?:number;
-}
-let getPersonName = (person:Person):void => {
-    console.log(person.name)
-}
-// 变量的形式进行传参，则除了可以传name、age还可以传别的参数则不会报错
-let person = {
- 		name:'dell',
-		sex:'male'
- }
-getPersonName(person)
+2.一些对象属性只能在对象刚刚创建的时候修改其值。 你可以在属性名前用 `readonly`来指定只读属性
 
-// 字面量的形式传参
-getPersonName({name:'dell',sex:'male'}) // 此时会报错，会进行对象的强校验
-// 如果使以上不报错，则可以如下写法：
-interface Person {
-    name:string;
-    age?:number;
-    [propName:string]:any; // 其他属性，属性名称是字符串，属性的值是任何类型的。
+```typescript
+// 使用场景：const作为变量使用和readonly作为属性使用
+interface Point {
+  readonly x: number;
+  readonly y: number;
 }
+
+let p1: Point = { x: 10, y: 20 }; // 初始化的时候赋值
+// p1.x = 5; // 这里就会报错， 说不能分配一个X值，因为它是只读属性
+
+//const与readonly区别： 做为变量使用的话用 const，若做为属性则使用readonly
+```
+
+### 6.3任意属性
+
+一个接口可能需要它除了具有我们需要的属性以为，还可以包含任意的其他属性，这时就要用到任意属性
+
+只要使用了任意属性，就要保证确定属性和可选属性的类型都必须是它的类型的子集
+
+```typescript
+interface Person {
+  name: string;
+  age?: number;
+  // 这种方式也叫 字符串索引签名
+    [propName: string]: string;
+  // [propName: string]: any;
+  //[propName: string]: number | string;
+}
+
+let tom: Person = {
+  name: 'Tommy',
+  // age: 20,
+  addr: '北京'
+};
+
+console.log(tom);
+
+// 上例中 任意属性的值允许的是string， 但可选属性age的值确实number， number不是string类型的子属性，所以编译报错。应该将上例的任意属性 变换为 [propName: string]: any; 或者是 number|string
 
 ```
 
-类类型
+### 6.4函数类型接口
+
+1. 接口能够描述JavaScript中对象拥有的各种各样的外形。 除了描述带有属性的普通对象外，接口也可以描述函数类型。
+
+2. 函数的参数会逐个进行检查，要求对应位置上的参数类型是兼容的
 
 ```typescript
-// 接口可以定义方法
-interface Person {
-  name:string;
-  age?:number;
-  say():string;
+// 之前我们在学习函数的时候给大家提过一点，函数也是一种数据类型，我们也可以通过接口的形式定义一个函数类型
+let add = function(x: number, y: string): string {
+  return x + y;
+};
+add(1, '--');
+let add1: (x: number, y: string) => string = function(x: number, y: string): string {
+  return x + y;
+};
+
+// 接口方式
+interface MyTypeFn {
+  (x: number, y: string): string;
 }
-// 接口类的继承
-interface Teacher extends Person{
-	teach():string;
+let add2:MyTypeFn; 
+add2 = function(x: number, y: string): string {
+  return x + y;
+};
+console(add2(1,'fsdf')) // 对应的参数类位置要一一对应
+```
+
+### 6.5可索引属性
+
+1. 与使用接口描述函数类型差不多，我们也可以描述那些能够“通过索引得到”的类型，比如`a[10]`或`ageMap["daniel"]`
+
+2. 可索引类型具有一个 索引签名，它描述了对象索引的类型，还有相应的索引返回值类型
+
+```typescript
+/**数字索引**/ 
+interface MyIndex {
+  // 这个表示 索引是数字， 通过索引访问对象里面的值返回数字类型
+  [index: number]: number;
+}
+let arr1: MyIndex;
+// 这个接口类型，定义的数据有两种方式实现，一个是对象一个是数组
+arr1 = {
+  0: 1,
+  1: 2
+};
+arr1 = [2, 3];
+
+/**字符串索引**/ 
+interface MyIndex1 {
+	// 这个表示 索引是字符串， 通过索引访问对象里面的值返回字符串类型
+  [index: string]: string;
+}
+let arr2: MyIndex1;
+arr2 = {
+  '0': 'red',
+  '1': 'blue'
+};
+
+
+```
+
+3.`TypeScript`支持两种索引签名：字符串和数字。 可以同时使用两种类型的索引，但是要注意：数字索引的返回值必须是字符串索引返回值类型的子类型或者相同；因为`obj[100]`等同于`obj['100']`
+
+```typescript
+class Animal {
+  name: string;
+}
+class Dog extends Animal {
+  breed: string;
+}
+let a3 = new Animal();
+let d1 = new Dog();
+let d2 = new Dog();
+// 错误：使用数值型的字符串索引的返回值Animal不是 使用字符串索引y的返回值Dog  的派生类类， 而是基类
+interface NotOkay {
+  // number索引的返回值  一定要是 string索引返回值得 派生类或者相同
+  // [x: number]: Animal;
+  // [y: string]: Dog;
+  [x: number]: Dog;
+  [y: string]: Animal; // 这里写Dog也可以， 相同或者基类才行； y看也可以换成x，就是一个标识作用
+}
+let a1: NotOkay = {
+  2: a3,
+  age: d2
+};
+```
+
+### 6.6泛型接口
+
+使用泛型接口， 可复用的支持任意传入参数，和我们之前学过的函数类型接口有点相似
+
+```typescript
+let fn3 = function(x: string, y: string): string[] {
+  return [x, y];
+};
+// 这个fn3函数的类型我们没有定义，是利用的 类型推论自动获取的，现在使用接口来定义一个符合我们这个函数需要的形状
+interface MyFn {
+  (x: string, y:string): string[]
+}
+// 这个时候就可以声明一个带类型的函数
+let fn3:MyFn;
+// 这个类型再修改一下，增加接口的复用性，将参数string换成动态的，由使用者决定；那么我们就需要使用泛型
+interface MyFn {
+  <T>(x: T, y: T):T[]
+}
+let fn3:MyFn;
+// 到这里我们的这个函数接口形状就已经完成，还可以将泛型参数提升到我们的接口名称上
+interface MyFn<T> {
+  (x: T, y:T): T[]
+}
+let fn3:MyFn;
+// 到这里我们的函数类型就可以传入任意类型的值，这个接口形状可复用性就更高了
+```
+
+
+
+### 6.7继承接口
+
+#### 6.7.1接口继承接口
+
+1.和类一样，接口也可以相互继承。 这让我们能够从一个接口里复制成员到另一个接口里，可以更灵活地将接口分割到可重用的模块里，实现低耦合高内聚的理念
+
+```typescript
+interface Animal {
+  color: string;
 }
 
-// 定义函数类型接口
-interface SayHi {
-    (word:string):string // 函数传一个word，类型为string。返回的是一个string类型的值
+interface Dog extends Animal {
+  bodyLength: number;
 }
 
-let getPersonName = (person:Teacher):void => {
-  console.log(person.name)
-}
-let person = {
-  name:'dell',
- sex:'male',
- say(){
-   return 'hello world'
- },
- teach(){
-   return 'jiaoshu'
- }
-}
-// 使用继承的接口
-getPersonName(person)
-// 使用定义的函数接口
-let say:SayHi = (word:string)=>{
-    return word
+let mydog: Dog = <Dog>{};
+mydog.color = 'blue';
+mydog.bodyLength = 10;
+```
+
+2.一个接口可以继承多个接口，创建出多个接口的合成接口
+
+```typescript
+interface Animal {
+  color: string;
 }
 
-// User类去应用接口Person
-class User implements Person {
-    name = 'dell';
-    say(){
-        return 'hello'
-    }
+interface Dog {
+  bodyLength: number;
 }
 
+// angular里面大量的使用类继承自多个内置类
+interface GreyDog extends Animal, Dog {
+  only: string;
+}
+let mydog: GreyDog = <GreyDog>{};
+mydog.color = 'blue';
+mydog.bodyLength = 10;
+mydog.only = '我的阿黄';
+```
+
+#### 6.7.2接口继承类
+
+1.当接口继承了一个类类型时，它会继承类的成员但不包括其实现；就好像接口声明了所有类中存在的成员，但并没有提供具体实现一样
+
+2.类定义会创建两个东西：类的实例类型和一个构造函数。因为类可以创建出类型。所以你能够在允许使用接口的地方使用类。
+
+```typescript
+class Animal {
+  name: string='yellow';
+  move() {
+    console.log('这是类里面的方法实现');
+  }
+}
+
+interface Dog extends Animal {
+  eat(): void;
+}
+let d1: Dog = {
+  name: '阿黄',
+  move() {
+    console.log(456);
+  },
+  move() {
+    console.log('这是具体方法的实现');
+  },
+  eat() {
+    console.log(123);
+  }
+};
+```
+
+### 7.类实现接口
+
+1.`TypeScript`能够用它来明确的强制一个类去符合某种契约
+
+2.实现（implements）是面向对象中的一个重要概念。一般来讲，一个类只能继承自另一个类，有时候不同类之间可以有一些共有的特性，这时候就可以把特性提取成接口（interfaces），用 implements 关键字来实现。这个特性大大提高了面向对象的灵活性; 这个implements在angular里面也有大量的使用
+
+```typescript
+interface Alarm {
+  // 定义一个公用的方法，具体的实现在实现的类里面去实现
+  warning():void;
+}
+//implements是对某个接口的实现，必须满足接口的类型规范
+class Door implements Alarm {
+  menbashou:string = '铜制';
+  warning() {
+    console.log('门报警器');
+  }
+}
+class Car implements Alarm {
+  wheel:string = '四个轮胎';
+  warning() {
+    console.log('车报警器');
+  }
+}
+class Baoma extends Car implements Alarm {
+  warning() {
+    console.log('宝马车报警器');
+  }
+}
+// 这个案例里面 车和门都有报警功能，所以将这个公共的功能抽离出来封装为一个接口
+// 需要这个功能的类比如Car  Door  Baoma  等去实现这个接口 implements即可
+// 要注意的是在接口里面是方法的签名，在类里面进行方法体的实现
+let d1 = new Door();
+let c1 = new Car();
+let c2 = new Baoma();
+d1.warning();
+c1.warning();
+// 这个打印只有两个属性； warning这个方法是绑定在构造函数Baoma的原型对象prototype上面的，可以在浏览器里面查看
+console.log(c2);
 ```
 
 总结：接口被编译成js时，接口和类型的东西都没有，也没有编译成对应的js代码。由此可以看到接口在开发过程中起到提示作用，只是作为语法校验的工具。
