@@ -37,7 +37,8 @@ module.exports = [
             { text: '面试题', link: '/pages/accumulation/interview/' },
             { text: '前端', link: '/pages/accumulation/front/' },
             { text: '后端', link: '/pages/accumulation/back/' },
-            { text: '其他', link: '/pages/accumulation/other/' },
+            { text: '基础工具', link: '/pages/accumulation/basetool/' },
+            { text: '博客搭建', link: '/pages/accumulation/createblog/' },
         ]
     },
     {

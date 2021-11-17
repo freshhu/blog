@@ -6,7 +6,7 @@
 ## 1. ElasticSearch注意情况
 - 我们的数据是存储在ElasticSearch里的，因为要做数据分析，因为要做数据分析，所以在ES里的数据需要是结构化的，不要是一大段没有结构的文本，这样是无法进行分析的 。
 <div style="width:523px; height:255px;">
-    <img src="/blog/images/accumulation/other/elk-note/es_use.jpg" style="width:100%; height:100%;" />
+    <img src="/blog/images/accumulation/basetool/elk-note/es_use.jpg" style="width:100%; height:100%;" />
 </div>
 
 - 注意字段是否有分词的情况

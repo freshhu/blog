@@ -3,7 +3,7 @@
  * @Email: hujiangnan@hatech.com.cn
  * @Date: 2021-11-07 21:32:32
  * @LastEditors: jiangnan
- * @LastEditTime: 2021-11-09 10:58:56
+ * @LastEditTime: 2021-11-17 10:07:16
  * @Describle: 描述
 -->
 
@@ -26,7 +26,7 @@ git clone https://github.com/freshhu/blog.git
 
 # change directory
 cd blog
-
+ 
 # install dependencies
 npm install
 

@@ -1,12 +1,4 @@
 #!/usr/bin/env sh
-###
- # @Author: jiangnan
- # @Email: hujiangnan@hatech.com.cn
- # @Date: 2021-11-07 00:03:18
- # @LastEditors: jiangnan
- # @LastEditTime: 2021-11-07 15:47:21
- # @Describle: 描述
-### 
 
 # 确保脚本抛出遇到的错误
 set -e

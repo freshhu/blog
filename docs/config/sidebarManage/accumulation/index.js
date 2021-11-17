@@ -69,12 +69,18 @@ const javaNoteConfig = require("./back/java-note");
 const javaBaseConfig = require("./back/java-base");
 const javaFrameConfig = require("./back/java-frame");
 /**
- * other 其他
+ * basetool 基础工具
  *  elk-note  elk笔记
  *  other-note  其他笔记
  */
-const elkNoteConfig = require("./other/elk-note");
-const _otherNoteConfig = require("./other/other-note");
+const elkNoteConfig = require("./basetool/elk-note");
+const _otherNoteConfig = require("./basetool/other-note");
+
+/**
+ * basetool 博客搭建
+ *  create-base  博客搭建
+ */
+const createBlog = require('./createblog/create-base');
 
 module.exports = {
     // 面试
@@ -118,10 +124,15 @@ module.exports = {
         javaBaseConfig, /// java基础
         javaFrameConfig // java框架
     ],
-    // 其他
-    '/pages/accumulation/other/': [
+    // 基础工具
+    '/pages/accumulation/basetool/': [
         '',
         elkNoteConfig,
         _otherNoteConfig
+    ],
+    // 博客搭建
+    '/pages/accumulation/createblog/': [
+        '',
+        createBlog
     ],
 }
