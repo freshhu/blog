@@ -82,6 +82,13 @@ const _otherNoteConfig = require("./basetool/other-note");
  */
 const createBlog = require('./createblog/create-base');
 
+/**
+ * functional 项目功能积累
+ *  functional-base  生成网页PDF功能
+ */
+const functional = require('./functional/functional-base');
+
+
 module.exports = {
     // 面试
     '/pages/accumulation/interview/': [
@@ -135,4 +142,9 @@ module.exports = {
         '',
         createBlog
     ],
+    // 功能积累
+    '/pages/accumulation/functional/': [
+        '',
+        functional
+    ]
 }

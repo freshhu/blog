@@ -39,6 +39,7 @@ module.exports = [
             { text: '后端', link: '/pages/accumulation/back/' },
             { text: '基础工具', link: '/pages/accumulation/basetool/' },
             { text: '博客搭建', link: '/pages/accumulation/createblog/' },
+            { text: '功能积累', link: '/pages/accumulation/functional/' },
         ]
     },
     {
