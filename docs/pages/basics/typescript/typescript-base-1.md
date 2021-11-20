@@ -1776,13 +1776,368 @@ dog.eat();
 
 
 
-## 十三、类的装饰器
+## 十三、装饰器
 
-​		装饰器是一种特殊类型的声明，它能够被附加到[类声明](https://www.tslang.cn/docs/handbook/decorators.html#class-decorators)，[方法](https://www.tslang.cn/docs/handbook/decorators.html#method-decorators)， [访问符](https://www.tslang.cn/docs/handbook/decorators.html#accessor-decorators)，[属性](https://www.tslang.cn/docs/handbook/decorators.html#property-decorators)或[参数](https://www.tslang.cn/docs/handbook/decorators.html#parameter-decorators)上。 装饰器使用 `@expression`这种形式，`expression`求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。
+​	装饰器是一种特殊类型的声明，它能够被附加到[类声明](https://www.tslang.cn/docs/handbook/decorators.html#class-decorators)，[方法](https://www.tslang.cn/docs/handbook/decorators.html#method-decorators)， [访问符](https://www.tslang.cn/docs/handbook/decorators.html#accessor-decorators)，[属性](https://www.tslang.cn/docs/handbook/decorators.html#property-decorators)或[参数](https://www.tslang.cn/docs/handbook/decorators.html#parameter-decorators)上。
+
+​	通俗的讲装饰器就是一个方法，可以注入到类、方法、属性参数上来扩展类、属性、方法、参数的功能。
+
+​	常见的装饰器有：类装饰器、属性装饰器、方法装饰器、参数装饰器
+
+​	装饰器的写法：普通装饰器（无法传参） 、 装饰器工厂（可传参）
+
+​	装饰器是过去几年中js最大的成就之一，已是Es7的标准特性之一
+
+### 13.1.类的装饰器
+
+​	类装饰器在类声明之前被声明（紧靠着类声明）。 类装饰器应用于类构造函数，可以用来监视，修改或替换类定义。 传入一个参数
+
+1.普通装饰器（无法传参）
 
 ```typescript
+function logClass(target:any){
+    console.log(target);// target 就是当前类-HttpClient  
+
+    params.prototype.apiUrl='动态扩展的属性';
+
+    // 在不修改HttpClient类的情况下，可以给它扩展一个run方法
+    params.prototype.run=function(){
+        console.log('我是一个run方法');
+    }
+
+}
+
+@logClass
+class HttpClient{
+    constructor(){
+    }
+    getData(){
+
+    }
+}
+
+var http:any=new HttpClient();
+console.log(http.apiUrl);  // 动态扩展的属性
 
 ```
 
+2.类装饰器:装饰器工厂（可传参）
 
+```typescript
+function logClass(params:string){
+    return function(target:any){
+        console.log(target); // target 就是当前类-HttpClient  
+        console.log(params); // hello
+        target.prototype.aa=params;
+    }
+}
+@logClass('hello')
+class HttpClient{
+    constructor(){
+    }
+
+    getData(){
+
+    }
+}
+var http:any=new HttpClient();
+console.log(http.aa); // hello
+```
+
+3.类装饰器，可以重载构造函数
+
+​	下面是一个重载构造函数的例子。
+
+​	 类装饰器表达式会在运行时当作函数被调用，类的构造函数作为其唯一的参数。
+
+ 	如果类装饰器返回一个值，它会使用提供的构造函数来替换类的声明。
+
+```typescript
+
+class HttpClient{
+    public apiUrl:string | undefined; // 只定义string类型时，会有警告，主要是防止不给apiUrl赋值，解决这个警告，可以赋一个undefined类型。
+    constructor(){
+        this.apiUrl='我是构造函数里面的apiUrl';
+    }
+    getData(){
+        console.log(this.apiUrl);
+    }
+}
+var http=new HttpClient();
+http.getData(); // 我是构造函数里面的apiUrl
+
+
+// 使用装饰器
+function logClass(target:any){
+    console.log(target);
+    return class extends target{
+        apiUrl:any='我是修改后的数据';
+        // 如果不重载，则会报错
+        getData(){
+            this.apiUrl=this.apiUrl+'----';
+            console.log(this.apiUrl);
+        }
+    }
+}
+
+
+@logClass
+class HttpClient{
+    public apiUrl:string | undefined;
+    constructor(){
+        this.apiUrl='我是构造函数里面的apiUrl';
+    }
+    getData(){
+        console.log(this.apiUrl);
+    }
+}
+
+var http=new HttpClient();
+http.getData();
+
+```
+
+### 13.2.属性装饰器
+
+  属性装饰器表达式会在运行时当作函数被调用，传入下列2个参数：
+
+​      1、对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+
+​      2、成员的名字。
+
+```typescript
+
+//类装饰器
+function logClass(params:string){
+    return function(target:any){
+        // console.log(target);
+        // console.log(params);       
+
+    }
+}
+
+//属性装饰器
+function logProperty(params:any){
+    return function(target:any,attr:any){
+        console.log(target);
+        console.log(attr);
+        // target为类的原型对象target.prototype
+        target[attr]=params;
+    }
+}
+@logClass('xxxx')
+class HttpClient{
+    @logProperty('http://baidu.com')
+    public url:any |undefined;
+    constructor(){
+    }
+    getData(){
+        console.log(this.url);
+    }
+}
+var http=new HttpClient();
+http.getData(); // http://baidu.com
+
+```
+
+### 13.3方法装饰器
+
+​	它会被应用到方法的 属性描述符上，可以用来监视，修改或者替换方法定义。
+
+​    		方法装饰会在运行时传入下列3个参数：
+
+​      		1、对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+
+​      		2、成员的名字。
+
+​      		3、成员的属性描述符。
+
+```typescript
+// 方法装饰器一
+function get(params:any){
+     return function(target:any,methodName:any,desc:any){
+         console.log(target); // 原型对象
+         console.log(methodName); // 方法名称
+         console.log(desc); // 描述
+         target.apiUrl='xxxx'; // 扩展属性
+         target.run=function(){
+             console.log('run');
+         }
+     }
+ }
+
+class HttpClient{  
+    public url:any |undefined;
+    constructor(){
+    }
+    @get('http://www.baidu.com')
+    getData(){
+        console.log(this.url);
+    }
+}
+
+var http:any=new HttpClient();
+console.log(http.apiUrl); // xxxx
+http.run(); // run
+```
+
+
+
+```typescript
+// 方法装饰器二：方法装饰器修改方法
+function get(params:any){
+    return function(target:any,methodName:any,desc:any){
+        console.log(target);
+        console.log(methodName);
+        console.log(desc.value); // 打印的是该getData方法     
+
+        //修改装饰器的方法  实现：把装饰器方法里面传入的所有参数改为string类型
+
+        //1、保存当前的方法
+        var oMethod=desc.value;
+        desc.value=function(...args:any[]){                
+            args=args.map((value)=>{
+                return String(value);
+            })
+            // console.log(args);
+            
+            // 如果不加这个  那么上面所写的方法就会完全替换HttpClient中的getData方法
+            oMethod.apply(this,args);
+        }
+
+    }
+}
+
+class HttpClient{  
+    public url:any |undefined;
+    constructor(){
+    }
+    @get('http://www.baidu.com')
+    getData(...args:any[]){
+        console.log(args);
+        console.log('我是getData里面的方法');
+    }
+}
+
+var http=new HttpClient();
+http.getData(123,'xxx'); // ['123','xxx'] 
+```
+
+### 13.4方法参数装饰器 
+
+​	参数装饰器表达式会在运行时当作函数被调用，可以使用参数装饰器为类的原型增加一些元素数据 ，传入下列3个参数：
+
+​     1、对于静态成员来说是类的构造函数，对于实例成员是类的原型对象。
+
+​      2、方法的名字。
+
+​      3、参数在函数参数列表中的索引。
+
+```typescript
+function logParams(params:any){
+    return function(target:any,methodName:any,paramsIndex:any){
+        console.log(params); // xxxxx
+        console.log(target); // 当前类的原型对象
+        console.log(methodName); // 当前的方法名称
+        console.log(paramsIndex);// 参数在函数参数列表中的索引。
+        target.apiUrl=params;
+
+    }   
+
+}
+
+class HttpClient{  
+    public url:any |undefined;
+    constructor(){
+    }           
+    getData(@logParams('xxxxx') uuid:any){               
+        console.log(uuid); // 传入的参数赋值给uuid了
+    }
+}
+
+
+var http:any = new HttpClient();
+http.getData(123456); // 传入的参数赋值给uuid了
+console.log( http.apiUrl); // xxxxx
+```
+
+### 13.5装饰器执行顺序
+
+```typescript
+//属性》方法》方法参数》类
+
+// 如果有多个同样的装饰器，它会先执行后面的
+
+function logClass1(params:string){
+    return function(target:any){
+        console.log('类装饰器1')
+    }
+}
+
+function logClass2(params:string){
+    return function(target:any){
+        console.log('类装饰器2')
+    }
+}
+
+function logAttribute1(params?:string){
+    return function(target:any,attrName:any){
+        console.log('属性装饰器1')
+    }
+}
+
+function logAttribute2(params?:string){
+    return function(target:any,attrName:any){
+        console.log('属性装饰器2')
+    }
+}
+
+function logMethod1(params?:string){
+    return function(target:any,attrName:any,desc:any){
+        console.log('方法装饰器1')
+    }
+}
+function logMethod2(params?:string){
+    return function(target:any,attrName:any,desc:any){
+        console.log('方法装饰器2')
+    }
+}
+
+
+
+function logParams1(params?:string){
+    return function(target:any,attrName:any,desc:any){
+        console.log('方法参数装饰器1')
+    }
+}
+
+function logParams2(params?:string){
+    return function(target:any,attrName:any,desc:any){
+        console.log('方法参数装饰器2')
+    }
+}
+
+@logClass1('http://www.baidu.com')
+@logClass2('xxxx')
+class HttpClient{
+    @logAttribute1()
+    @logAttribute2()
+    public apiUrl:string | undefined;
+    constructor(){
+    }
+
+    @logMethod1()
+    @logMethod2()
+    getData(){
+        return true;
+    }
+
+    setData(@logParams1() attr1:any,@logParams2() attr2:any,){
+
+    }
+}
+
+var http:any=new HttpClient();
+
+```
 
