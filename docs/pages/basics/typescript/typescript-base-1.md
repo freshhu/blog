@@ -1453,60 +1453,43 @@ printPoint(new Point(1, 2));
 ​		`tsconfig.json`文件可以是个空文件，那么所有默认的文件（如上面所述）都会以默认配置选项编译。
 
 ​		在命令行上指定的编译选项会覆盖在`tsconfig.json`文件里的相应选项。
-
+  ``常用 18 项配置选项详解: ``
 ```javascript
+
 {
   "compilerOptions": {
-  
-    /* 基本选项 */
-    "target": "es5",                       // 指定 ECMAScript 目标版本: 'ES3' (default), 'ES5', 'ES6'/'ES2015', 'ES2016', 'ES2017', or 'ESNEXT'
-    "module": "commonjs",                  // 指定使用模块: 'commonjs', 'amd', 'system', 'umd' or 'es2015'
-    "lib": [],                             // 指定要包含在编译中的库文件
-    "allowJs": true,                       // 允许编译 javascript 文件
-    "checkJs": true,                       // 报告 javascript 文件中的错误
-    "jsx": "preserve",                     // 指定 jsx 代码的生成: 'preserve', 'react-native', or 'react'
-    "declaration": true,                   // 生成相应的 '.d.ts' 文件
-    "sourceMap": true,                     // 生成相应的 '.map' 文件
-    "outFile": "./",                       // 将输出文件合并为一个文件
-    "outDir": "./",                        // 指定输出目录
-    "rootDir": "./",                       // 用来控制输出目录结构 --outDir.
-    "removeComments": true,                // 删除编译后的所有的注释
-    "noEmit": true,                        // 不生成输出文件
-    "importHelpers": true,                 // 从 tslib 导入辅助工具函数
-    "isolatedModules": true,               // 将每个文件做为单独的模块 （与 'ts.transpileModule' 类似）.
-
-    /* 严格的类型检查选项 */
-    "strict": true,                        // 启用所有严格类型检查选项
-    "noImplicitAny": true,                 // 在表达式和声明上有隐含的 any类型时报错
-    "strictNullChecks": true,              // 启用严格的 null 检查
-    "noImplicitThis": true,                // 当 this 表达式值为 any 类型的时候，生成一个错误
-    "alwaysStrict": true,                  // 以严格模式检查每个模块，并在每个文件里加入 'use strict'
-
-    /* 额外的检查 */
-    "noUnusedLocals": true,                // 有未使用的变量时，抛出错误
-    "noUnusedParameters": true,            // 有未使用的参数时，抛出错误
-    "noImplicitReturns": true,             // 并不是所有函数里的代码都有返回值时，抛出错误
-    "noFallthroughCasesInSwitch": true,    // 报告 switch 语句的 fallthrough 错误。（即，不允许 switch 的 case 语句贯穿）
-
-    /* 模块解析选项 */
-    "moduleResolution": "node",            // 选择模块解析策略： 'node' (Node.js) or 'classic' (TypeScript pre-1.6)
-    "baseUrl": "./",                       // 用于解析非相对模块名称的基目录
-    "paths": {},                           // 模块名到基于 baseUrl 的路径映射的列表
-    "rootDirs": [],                        // 根文件夹列表，其组合内容表示项目运行时的结构内容
-    "typeRoots": [],                       // 包含类型声明的文件列表
-    "types": [],                           // 需要包含的类型声明文件名列表
-    "allowSyntheticDefaultImports": true,  // 允许从没有设置默认导出的模块中默认导入。
-
-    /* Source Map Options */
-    "sourceRoot": "./",                    // 指定调试器应该找到 TypeScript 文件而不是源文件的位置
-    "mapRoot": "./",                       // 指定调试器应该找到映射文件而不是生成文件的位置
-    "inlineSourceMap": true,               // 生成单个 soucemaps 文件，而不是将 sourcemaps 生成不同的文件
-    "inlineSources": true,                 // 将代码与 sourcemaps 生成到一个文件中，要求同时设置了 --inlineSourceMap 或 --sourceMap 属性
-
-    /* 其他选项 */
-    "experimentalDecorators": true,        // 启用装饰器
-    "emitDecoratorMetadata": true          // 为装饰器提供元数据的支持
-  }
+    "target": "es2020", // 指定 TS 编译成 JS 后的js版本
+    "module": "commonjs", // TS 编译成 JS 后采用的模块规范 commonjs amd cmd  es等         
+    "lib": ["DOM","ES2020"], /*  指定 TS 编码期间可以使用的库文件版本 比如：ES5就不支持Set集合 */
+    "outDir": "./dist", //     指定 TS 文件编译成 JS 后的输出目录                 /* Redirect output structure to the directory. */
+    "rootDir": "./src", // 指定 TS 文件源码目录
+    "strict": true, // 启用严格检查模式
+    "strictNullChecks":false,// null 和 undefined即是值，也是类型, null 和 undefined 值 只能赋值给 any ,unknown和它们各自的类型
+    "noImplicitAny": true, // 一般是指表达式或函数参数上有隐含的 any类型时报错
+    "experimentalDecorators": true, /* 启用ES7装饰器实验开启选项 */
+    "emitDecoratorMetadata": true, /* 启用装饰器元数据开启选项 */
+    "declaration": true, // 指定 TS 文件编译后生成相应的.d.ts文件
+    "removeComments": false, // TS 文件编译后删除所有的注释
+    
+    "baseUrl": "src", /* 工作根目录  解析非相对模块的基地址*/
+    "paths": {
+        "@/datatype/*": ["datatype/*"],
+        "@/131/*": ["131/*"],
+        "@/132/*": ["132/*"]
+      },    
+    // 有些依赖库底层 为了兼容CommonJs规范、AMD规范这二者的规范中相互兼容，
+    // 使用了 export =，将二者规范统一。
+    // "esModuleInterop":true表示允许依赖库中出现export = 这种兼容规范导出的格式，
+    //  TS 可以用import from导入 
+    "esModuleInterop": true,  
+  },
+  "include": [ // 需要编译的ts文件一个*表示文件匹配**表示忽略文件的深度问题
+    "./src/**/*.ts", // 匹配src下所有的ts文件
+    "src/datatype/typepsenumts"  ],
+   "exclude": [
+    "./src/**/test",
+    "./src/**/premit", 
+  ]
 }
 
 
