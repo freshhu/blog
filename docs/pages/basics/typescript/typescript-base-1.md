@@ -43,8 +43,14 @@ TypeScript 提供最新的和不断发展的 JavaScript 特性，包括那些来
 3. 编译 TypeScript 文件
 
    ```bash
-    # helloworld.ts => helloworld.js 
+    # helloworld.ts => helloworld.js (不会经过配置文件，可以写配置 tsc --outDir outjs --target es5 --module commonjs helloworld.ts )
    tsc helloworld.ts  
+
+   # 监听ts文件变化，自动生成对应的ts (经过配置文件)
+   tsc -w
+
+   # 将全局ts文件编译为js (经过配置文件)
+   tsc
    ```
 
 4. 快捷编译TypeScript文件，则可以安装 ts-node

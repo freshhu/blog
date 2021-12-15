@@ -8,6 +8,7 @@ module.exports = {
         'javascript-base-3',
         'javascript-base-4',
         'javascript-base-5',
-        'javascript-base-6'
+        'javascript-base-6',
+        'javascript-base-7'
     ]
 };

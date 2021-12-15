@@ -3,5 +3,6 @@ module.exports = {
     collapsable: false,
     children: [
         'javascript-advanced-1',
+        'javascript-advanced-2',
     ]
 };
