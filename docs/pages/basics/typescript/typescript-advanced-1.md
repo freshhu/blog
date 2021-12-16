@@ -88,7 +88,7 @@ dataFlowAnalysisWithNever(3.199923)
 
 ## 5、枚举的好处及应用
  
-### 5.1枚举带来的好处:
+ ``5.1枚举带来的好处:``
 
   1. 有默认值和可以自增值,节省编码时间
 
@@ -96,57 +96,57 @@ dataFlowAnalysisWithNever(3.199923)
 
   因为枚举是一种值类型的数据类型,方法参数可以明确参数类型为枚举类型
 
-### 5.2枚举的应用
+ ``5.2枚举的应用``
   ```typescript
-export enum EnumAuditStatus {
-  MANAGER_ADUIT_FAIL = -1,//第一个常量值设置为-1
-  NO_ADUIT, // 第二个常量值自动递增1 就为0
-  MANAGER_ADUIT_SUCCESS,// // // 第二个常量值自动递增2 就为1
-  FINAL_ADUIT_SUCCESS // // // 第二个常量值自动递增3 就为2
-}
+  export enum EnumAuditStatus {
+    MANAGER_ADUIT_FAIL = -1,//第一个常量值设置为-1
+    NO_ADUIT, // 第二个常量值自动递增1 就为0
+    MANAGER_ADUIT_SUCCESS,// // // 第二个常量值自动递增2 就为1
+    FINAL_ADUIT_SUCCESS // // // 第二个常量值自动递增3 就为2
+  }
 
 
-interface Expense {
-  id: number,
-  events: string,
-  time: Date,
-  enumAuditStatus: EnumAuditStatus
-}
+  interface Expense {
+    id: number,
+    events: string,
+    time: Date,
+    enumAuditStatus: EnumAuditStatus
+  }
 
-class ExpenseService {
-  addExpense(expense: Expense) { }
-}
-let expenseService = new ExpenseService();
+  class ExpenseService {
+    addExpense(expense: Expense) { }
+  }
+  let expenseService = new ExpenseService();
 
-// 审核类
-class MyAduit {
-  getAduitStatus(status: EnumAuditStatus): void {
-    let mystatus: EnumAuditStatus = 10;//定义枚举类型的变量
-    let mystatus2: EnumAuditStatus = mystatus;
-    mystatus2 = mystatus2 + 1;
-    console.log("mystatus:", mystatus);//10
-    console.log("mystatus2", mystatus2);//11
+  // 审核类
+  class MyAduit {
+    getAduitStatus(status: EnumAuditStatus): void {
+      let mystatus: EnumAuditStatus = 10;//定义枚举类型的变量
+      let mystatus2: EnumAuditStatus = mystatus;
+      mystatus2 = mystatus2 + 1;
+      console.log("mystatus:", mystatus);//10
+      console.log("mystatus2", mystatus2);//11
 
-    if (status === EnumAuditStatus.NO_ADUIT) {//NO_ADUIT=0
-      console.log("没有审核");
-    } else if (status === EnumAuditStatus.MANAGER_ADUIT_SUCCESS) {
-      console.log("经理审核通过");
-      let expense: Expense = {
-        id: 1,
-        events: "飞机票报销",
-        time: new Date(),
-        enumAuditStatus: status
+      if (status === EnumAuditStatus.NO_ADUIT) {//NO_ADUIT=0
+        console.log("没有审核");
+      } else if (status === EnumAuditStatus.MANAGER_ADUIT_SUCCESS) {
+        console.log("经理审核通过");
+        let expense: Expense = {
+          id: 1,
+          events: "飞机票报销",
+          time: new Date(),
+          enumAuditStatus: status
+        }
+        expenseService.addExpense(expense)
+      } else if (status === EnumAuditStatus.FINAL_ADUIT_SUCCESS) {
+        console.log("财务审核通过");
+      } else {
+        console.log("审核失败");
       }
-      expenseService.addExpense(expense)
-    } else if (status === EnumAuditStatus.FINAL_ADUIT_SUCCESS) {
-      console.log("财务审核通过");
-    } else {
-      console.log("审核失败");
     }
   }
-}
 
-const aduit = new MyAduit();
-aduit.getAduitStatus(EnumAuditStatus.FINAL_ADUIT_SUCCESS);
-export { }
+  const aduit = new MyAduit();
+  aduit.getAduitStatus(EnumAuditStatus.FINAL_ADUIT_SUCCESS);
+  export { }
 ```
